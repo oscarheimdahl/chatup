@@ -1,0 +1,20 @@
+2022-04-05 19:12:52.469 CEST [25741] LOG:  starting PostgreSQL 14.2 on aarch64-apple-darwin21.3.0, compiled by Apple clang version 13.0.0 (clang-1300.0.29.30), 64-bit
+2022-04-05 19:12:52.469 CEST [25741] LOG:  listening on IPv6 address "::1", port 5432
+2022-04-05 19:12:52.469 CEST [25741] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2022-04-05 19:12:52.475 CEST [25741] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2022-04-05 19:12:52.479 CEST [25742] LOG:  database system was shut down at 2022-04-05 19:10:53 CEST
+2022-04-05 19:12:52.485 CEST [25741] LOG:  database system is ready to accept connections
+2022-04-05 19:13:36.683 CEST [25970] FATAL:  database "oscar.heimdahl" does not exist
+2022-04-05 19:16:01.097 CEST [27528] FATAL:  role "postgres" does not exist
+2022-04-05 19:16:18.999 CEST [27691] FATAL:  role "postgres" does not exist
+2022-04-05 19:16:20.562 CEST [28037] FATAL:  role "postgres" does not exist
+2022-04-05 19:17:50.296 CEST [30494] ERROR:  syntax error at or near "." at character 40
+2022-04-05 19:17:50.296 CEST [30494] STATEMENT:  create DATABASE chatup WITH OWNER oscar.heimdahl;
+2022-04-05 19:20:44.177 CEST [31186] ERROR:  syntax error at or near "CREATE" at character 24
+2022-04-05 19:20:44.177 CEST [31186] STATEMENT:  CREATE DATABASE chatup
+	CREATE DATABASE chatup;
+2022-04-05 19:21:44.408 CEST [32150] FATAL:  role "postgres" does not exist
+2022-04-05 19:30:07.657 CEST [37113] ERROR:  bind message supplies 1 parameters, but prepared statement "" requires 0
+2022-04-05 19:30:07.657 CEST [37113] STATEMENT:  SELECT current_database()
+2022-04-05 19:30:07.690 CEST [37113] LOG:  could not receive data from client: Connection reset by peer
+2022-04-05 19:31:37.405 CEST [38028] FATAL:  role "chatup" does not exist

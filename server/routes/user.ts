@@ -2,6 +2,7 @@ import * as express from 'express';
 import { compareHash } from '../db/hash';
 import { generateNewToken } from '../db/token';
 import { createUser, getUser } from '../db/user';
+
 const userRoutes = express.Router();
 
 userRoutes.get('/login', async (req, res) => {
@@ -14,7 +15,7 @@ userRoutes.get('/login', async (req, res) => {
 
   const user = await getUser(username);
   if (!user) {
-    return res.status(500).end();
+    return res.status(403).end();
   }
 
   const passwordMatch = await compareHash(password, user.password);
@@ -23,8 +24,9 @@ userRoutes.get('/login', async (req, res) => {
   }
 
   let token;
+
   try {
-    token = generateNewToken();
+    token = generateNewToken(username);
   } catch (e) {
     return res.status(500);
   }

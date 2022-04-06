@@ -1,11 +1,11 @@
 import * as jwt from 'jsonwebtoken';
 
-export const generateNewToken = () => {
+export const generateNewToken = (username: string) => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error('No JWT_SECRET available');
   }
-  return jwt.sign({ oscar: 'heim' }, secret, { expiresIn: '10s' });
+  return jwt.sign({ username }, secret, { expiresIn: '10s' });
 };
 
 export const verifyToken = async (token: string) => {

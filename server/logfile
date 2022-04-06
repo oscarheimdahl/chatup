@@ -18,3 +18,74 @@
 2022-04-05 19:30:07.657 CEST [37113] STATEMENT:  SELECT current_database()
 2022-04-05 19:30:07.690 CEST [37113] LOG:  could not receive data from client: Connection reset by peer
 2022-04-05 19:31:37.405 CEST [38028] FATAL:  role "chatup" does not exist
+2022-04-06 16:18:20.952 CEST [37589] ERROR:  syntax error at or near ")" at character 153
+2022-04-06 16:18:20.952 CEST [37589] STATEMENT:  
+	  CREATE TABLE IF NOT EXISTS "users" (
+	    "id" SERIAL PRIMARY KEY,
+	    "username" VARCHAR(20) NOT NULL UNIQUE,
+	    "password" VARCHAR(20) NOT NULL,
+	  );
+2022-04-06 16:18:20.973 CEST [37589] WARNING:  there is no transaction in progress
+2022-04-06 16:33:51.846 CEST [41019] ERROR:  syntax error at or near "." at character 17
+2022-04-06 16:33:51.846 CEST [41019] STATEMENT:  ALTER USER oscar.heimdahl WITH PASSWORD j414m0Tgp7uv;
+2022-04-06 16:34:40.671 CEST [41019] ERROR:  syntax error at or near "ALTER" at character 18
+2022-04-06 16:34:40.671 CEST [41019] STATEMENT:  ALTER USER oscar
+	ALTER USER oscar.heimdahl WITH PASSWORD j414m0Tgp7uv;
+2022-04-06 16:34:59.239 CEST [41019] ERROR:  syntax error at or near "." at character 17
+2022-04-06 16:34:59.239 CEST [41019] STATEMENT:  ALTER USER oscar.heimdahl WITH PASSWORD j414m0Tgp7uv;
+2022-04-06 16:35:24.374 CEST [41019] ERROR:  role "postgres" does not exist
+2022-04-06 16:35:24.374 CEST [41019] STATEMENT:  ALTER USER postgres PASSWORD 'SCRAM-SHA-256$4096:RlhtonwU3HdOjMZ19AsXRQ==$pV6Ok7BCr8xhjIghM/hT/PbYU7DWYNhvtzv92O96Tbs=:evopPnaJzx32Wxt8/YOJVCH6rFyjh3NZ+HRUYUETsTc='
+2022-04-06 16:39:35.111 CEST [42881] LOG:  could not receive data from client: Connection reset by peer
+2022-04-06 16:39:35.143 CEST [42883] ERROR:  relation "_prisma_migrations" does not exist at character 126
+2022-04-06 16:39:35.143 CEST [42883] STATEMENT:  SELECT "id", "checksum", "finished_at", "migration_name", "logs", "rolled_back_at", "started_at", "applied_steps_count" FROM "_prisma_migrations" ORDER BY "started_at" ASC
+2022-04-06 16:43:18.637 CEST [44241] ERROR:  syntax error at or near ")" at character 158
+2022-04-06 16:43:18.637 CEST [44241] STATEMENT:  
+	  CREATE TABLE IF NOT EXISTS "users" (
+	    "id" SERIAL    PRIMARY KEY,
+	    "username" VARCHAR(20) NOT NULL UNIQUE,
+	    "password" VARCHAR(20) NOT NULL,
+	 
+	  );
+2022-04-06 16:43:18.648 CEST [44241] WARNING:  there is no transaction in progress
+2022-04-06 16:47:35.190 CEST [44954] LOG:  could not receive data from client: Connection reset by peer
+2022-04-06 16:59:09.884 CEST [50980] LOG:  could not receive data from client: Connection reset by peer
+2022-04-06 16:59:22.977 CEST [50982] ERROR:  could not create unique index "user_name_key"
+2022-04-06 16:59:22.977 CEST [50982] DETAIL:  Key (name)=(Oscar) is duplicated.
+2022-04-06 16:59:22.977 CEST [50982] STATEMENT:  /*
+	  Warnings:
+	
+	  - A unique constraint covering the columns `[name]` on the table `user` will be added. If there are existing duplicate values, this will fail.
+	
+	*/
+	-- CreateIndex
+	CREATE UNIQUE INDEX "user_name_key" ON "user"("name");
+	
+2022-04-06 16:59:40.231 CEST [51168] LOG:  could not receive data from client: Connection reset by peer
+2022-04-06 16:59:54.252 CEST [51248] LOG:  could not receive data from client: Connection reset by peer
+2022-04-06 17:17:29.284 CEST [57784] LOG:  could not receive data from client: Connection reset by peer
+2022-04-06 17:19:24.404 CEST [58781] ERROR:  duplicate key value violates unique constraint "user_username_key"
+2022-04-06 17:19:24.404 CEST [58781] DETAIL:  Key (username)=(Oscar) already exists.
+2022-04-06 17:19:24.404 CEST [58781] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
+2022-04-06 17:21:04.452 CEST [59559] ERROR:  duplicate key value violates unique constraint "user_username_key"
+2022-04-06 17:21:04.452 CEST [59559] DETAIL:  Key (username)=(Oscar) already exists.
+2022-04-06 17:21:04.452 CEST [59559] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
+2022-04-06 17:28:08.617 CEST [60719] ERROR:  duplicate key value violates unique constraint "user_username_key"
+2022-04-06 17:28:08.617 CEST [60719] DETAIL:  Key (username)=(Oscar) already exists.
+2022-04-06 17:28:08.617 CEST [60719] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
+2022-04-06 17:28:17.961 CEST [60738] ERROR:  duplicate key value violates unique constraint "user_username_key"
+2022-04-06 17:28:17.961 CEST [60738] DETAIL:  Key (username)=(Oscar) already exists.
+2022-04-06 17:28:17.961 CEST [60738] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
+2022-04-06 17:28:30.872 CEST [60791] ERROR:  duplicate key value violates unique constraint "user_username_key"
+2022-04-06 17:28:30.872 CEST [60791] DETAIL:  Key (username)=(Oscar) already exists.
+2022-04-06 17:28:30.872 CEST [60791] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
+2022-04-06 17:28:47.054 CEST [60852] ERROR:  duplicate key value violates unique constraint "user_username_key"
+2022-04-06 17:28:47.054 CEST [60852] DETAIL:  Key (username)=(Oscar) already exists.
+2022-04-06 17:28:47.054 CEST [60852] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
+2022-04-06 17:54:45.660 CEST [67747] ERROR:  duplicate key value violates unique constraint "user_username_key"
+2022-04-06 17:54:45.660 CEST [67747] DETAIL:  Key (username)=(Oscar2) already exists.
+2022-04-06 17:54:45.660 CEST [67747] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
+2022-04-06 17:54:47.385 CEST [67747] ERROR:  duplicate key value violates unique constraint "user_username_key"
+2022-04-06 17:54:47.385 CEST [67747] DETAIL:  Key (username)=(Oscar2) already exists.
+2022-04-06 17:54:47.385 CEST [67747] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
+2022-04-06 19:52:46.818 CEST [18543] LOG:  could not receive data from client: Connection reset by peer
+2022-04-06 20:38:21.151 CEST [39968] LOG:  could not receive data from client: Connection reset by peer

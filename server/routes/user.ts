@@ -5,12 +5,12 @@ import { createUser, getUser } from '../db/user';
 
 const userRoutes = express.Router();
 
-userRoutes.get('/login', async (req, res) => {
+userRoutes.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const errMessage = validateLogin(username, password);
 
   if (errMessage) {
-    res.status(400).send(errMessage);
+    return res.status(400).send(errMessage);
   }
 
   const user = await getUser(username);
@@ -65,6 +65,7 @@ const validateRegister = (username: string, password: string) => {
     return errorMessage;
   }
   if (username.length < 5) return `Username can't be shorter than 5`;
+  if (username.length > 10) return `Username can't be longer than 10`;
   if (password.length < 8) return `Password can't be shorter than 8`;
 };
 

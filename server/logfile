@@ -89,3 +89,7 @@
 2022-04-06 17:54:47.385 CEST [67747] STATEMENT:  INSERT INTO "public"."user" ("username","password") VALUES ($1,$2) RETURNING "public"."user"."id"
 2022-04-06 19:52:46.818 CEST [18543] LOG:  could not receive data from client: Connection reset by peer
 2022-04-06 20:38:21.151 CEST [39968] LOG:  could not receive data from client: Connection reset by peer
+2022-04-06 23:27:57.332 CEST [25741] LOG:  received smart shutdown request
+2022-04-06 23:27:57.336 CEST [25741] LOG:  background worker "logical replication launcher" (PID 25748) exited with exit code 1
+2022-04-06 23:27:57.337 CEST [25743] LOG:  shutting down
+2022-04-06 23:27:57.385 CEST [25741] LOG:  database system is shut down

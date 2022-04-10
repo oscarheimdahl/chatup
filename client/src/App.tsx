@@ -2,15 +2,15 @@ import { useAppSelector } from './store/hooks';
 import LoginView from './views/LoginView';
 
 const App = () => {
-  const user = useAppSelector((state) => state.user);
+  const loggedIn = useAppSelector((state) => state.user.loggedIn);
 
-  if (!user.loggedIn)
+  if (!loggedIn)
     return (
       <div>
         <LoginView></LoginView>
       </div>
     );
-  return <div></div>;
+  return <div>Logged in</div>;
 };
 
 export default App;

@@ -41,6 +41,7 @@ const LoginView = () => {
     </>
   );
 };
+
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -48,10 +49,7 @@ const Register = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await dispatch(register({ username, password }));
-    if (isFulfilled()(res)) {
-      // do stuff
-    }
+    dispatch(register({ username, password }));
   };
 
   return (
@@ -63,7 +61,7 @@ const Register = () => {
           onChange={(e) => setUsername(e.target.value)}
           type='text'
           name='username'
-          id='username'
+          id='register-username'
         />
         <label htmlFor='username'>Password</label>
         <input
@@ -71,7 +69,7 @@ const Register = () => {
           onChange={(e) => setPassword(e.target.value)}
           type='password'
           name='password'
-          id='password'
+          id='register-password'
         />
         <input value='Register' type='submit'></input>
       </form>

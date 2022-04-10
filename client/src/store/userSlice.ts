@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios, { AxiosResponse } from 'axios';
-import { host } from '..';
+import axios from 'axios';
+import { host } from '../../config/vars';
 
 export const login = createAsyncThunk(
   'users/login',
@@ -28,13 +28,15 @@ export const userSlice = createSlice({
     token: '',
   },
   reducers: {
-    // login: (state, token) => {
-    //   console.log(token);
+    // setLoggedIn: (state, action: PayloadAction<boolean>) => {
+    //   console.log(action.payload);
+    //   state.loggedIn = action.payload;
     // },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
       state.token = action.payload;
+      state.loggedIn = true;
     });
     builder.addCase(register.fulfilled, (state, action) => {
       console.log('we have registered');
@@ -43,7 +45,7 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const actions = userSlice.actions;
+export const {} = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 

@@ -1,8 +1,7 @@
-import { isFulfilled } from '@reduxjs/toolkit';
 import { FormEvent, useState } from 'react';
-import { useAppDispatch } from '../store/hooks';
-import { login } from '../store/userSlice';
-import { register } from '../store/userSlice';
+
+import { useAppDispatch } from '@store/hooks';
+import { login, register } from '@store/slices/userSlice';
 
 const LoginView = () => {
   const [username, setUsername] = useState('');

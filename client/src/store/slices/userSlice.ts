@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { host } from '../../config/vars';
+import { host } from '@src/config/vars';
 
 export const login = createAsyncThunk(
   'users/login',

@@ -1,0 +1,37 @@
+#dots-background {
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(hsl(251, 42%, 28%), hsl(354, 45%, 24%));
+  overflow: hidden;
+  position: absolute;
+  display: grid;
+  place-content: center;
+  z-index: -1;
+
+  .dots {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+
+    .dot-container {
+      width: 100px;
+      height: 100px;
+      flex-grow: 1;
+      display: grid;
+      place-items: center;
+
+      .dot {
+        height: 8px;
+        width: 8px;
+        background-color: hsl(276, 59%, 70%);
+        border-radius: 9px;
+        transition-duration: 2s;
+      }
+      .dot.odd {
+        background-color: hsl(298, 71%, 80%);
+        background-color: black;
+      }
+    }
+  }
+}

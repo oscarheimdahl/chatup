@@ -1,0 +1,15 @@
+.button-component {
+  border: none;
+  outline: solid black 1px;
+  transition: outline-offset 100ms;
+  margin: 0.3rem;
+  padding: 0.2rem;
+  background-color: #bc85e0;
+  color: white;
+
+  &:focus,
+  &:hover {
+    outline-offset: 0.2rem;
+    cursor: pointer;
+  }
+}

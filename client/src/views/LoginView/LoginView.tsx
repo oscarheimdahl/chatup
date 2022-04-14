@@ -1,11 +1,14 @@
 import { FormEvent, useState } from 'react';
-
 import { useAppDispatch } from '@store/hooks';
 import { login, register } from '@store/slices/userSlice';
+import DotsBackground from '@src/components/DotsBackground';
+import './login-view.scss';
+import Input from '@src/components/Input/Input';
+import Button from '@src/components/Button/Button';
 
 const LoginView = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('oscar');
+  const [password, setPassword] = useState('heimdahl');
   const dispatch = useAppDispatch();
 
   const handleSubmit = (e: FormEvent) => {
@@ -15,26 +18,14 @@ const LoginView = () => {
 
   return (
     <>
-      <Register></Register>
-      <div>
+      <DotsBackground />
+      {/* <Register></Register> */}
+      <div id='login-view'>
         <form name='login' onSubmit={handleSubmit}>
-          <label htmlFor='username'>Username</label>
-          <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            type='text'
-            name='username'
-            id='username'
-          />
-          <label htmlFor='username'>Password</label>
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type='password'
-            name='password'
-            id='password'
-          />
-          <input value='Login' type='submit'></input>
+          <Input value={username} id='username' label='Username' onChange={(e) => setUsername(e.target.value)}></Input>
+          <Input value={password} id='password' label='Password' onChange={(e) => setPassword(e.target.value)}></Input>
+          {/* <input value='Login' type='submit'></input> */}
+          <Button>Login</Button>
         </form>
       </div>
     </>

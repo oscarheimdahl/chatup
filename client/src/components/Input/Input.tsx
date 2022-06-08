@@ -5,13 +5,22 @@ interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   id: string;
   label?: string;
+  indicated?: boolean;
 }
 
-const Input = ({ value, onChange, id, label }: InputProps) => {
+const Input = ({ value, onChange, id, label, indicated }: InputProps) => {
   return (
     <section className='input-section'>
       {label && <label htmlFor={id}>{label}</label>}
-      <input value={value} onChange={onChange} type='text' name={id} id={id} />
+      <input
+        className={indicated ? 'indicated' : ''}
+        value={value}
+        onChange={onChange}
+        type='text'
+        name={id}
+        id={id}
+      ></input>
+      {/* <div className={`indicator ${indicated ? 'show' : ''}`}></div> */}
     </section>
   );
 };

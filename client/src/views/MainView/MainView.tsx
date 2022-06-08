@@ -1,27 +1,39 @@
-import { host } from '@src/config/vars';
+import useSocket from '@src/hooks/useSocket';
 import { useAppSelector } from '@src/store/hooks';
 import { useState } from 'react';
-import { io } from 'socket.io-client';
+import { ChatMessage } from '../../../../types';
 
 const MainView = () => {
-  const token = useAppSelector((s) => s.user.token);
-  const [roomName, setRoomName] = useState('');
+  const [room, setRoom] = useState('');
+  const [message, setMessage] = useState('');
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRoomName(e.target.value);
+  const socket = useSocket();
+  const token = useAppSelector((s) => s.user.token);
+
+  const handleRoomInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRoom(e.target.value);
+  };
+  const handleMessageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
   };
 
-  const joinRoom = () => {
-    const socket = io(host, { auth: { token: token + '1' } });
-
-    console.log(roomName);
+  const sendMessage = () => {
+    const roomMessage: ChatMessage = { room, message, token: token };
+    socket.emit('message', roomMessage);
   };
 
   return (
     <>
       <h1>Welcome to the main page</h1>
-      <input type='text' onChange={handleInput} />
-      <button onClick={joinRoom}>Join room</button>
+      <label htmlFor='room'>Room</label>
+      <br />
+      <input name='room' value={room} type='text' onChange={handleRoomInput} />
+      <br />
+      <label htmlFor='message'>message</label>
+      <br />
+      <input name='message' value={message} type='text' onChange={handleMessageInput} />
+      <br />
+      <button onClick={sendMessage}>Send message</button>
     </>
   );
 };

@@ -1,7 +1,7 @@
 #dots-background {
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(hsl(251, 42%, 28%), hsl(354, 45%, 24%));
+  background-image: linear-gradient(var(--accent-1), var(--accent-2));
   overflow: hidden;
   position: absolute;
   display: grid;
@@ -24,13 +24,9 @@
       .dot {
         height: 8px;
         width: 8px;
-        background-color: hsl(276, 59%, 70%);
+        background-color: var(--accent-3);
         border-radius: 9px;
         transition-duration: 2s;
-      }
-      .dot.odd {
-        background-color: hsl(298, 71%, 80%);
-        background-color: black;
       }
     }
   }

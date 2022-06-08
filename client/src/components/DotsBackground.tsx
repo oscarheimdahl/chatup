@@ -22,10 +22,9 @@ const DotsBackground = () => {
     <div id='dots-background'>
       <div className='dots'>
         {[...Array(n)].map((_, i) => {
-          let odd = false;
           return (
             <div key={i} className='dot-container'>
-              <div key={i} className={`dot ${odd ? 'odd' : ''}`}></div>
+              <div key={i} className='dot'></div>
             </div>
           );
         })}

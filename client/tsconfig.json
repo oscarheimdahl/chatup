@@ -11,5 +11,6 @@
       "@store/*": ["src/store/*"],
       "@hooks/*": ["src/hooks/*"]
     }
-  }
+  },
+  "include": ["../types", "./**/*.ts", "./**/*.tsx"]
 }

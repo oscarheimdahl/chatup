@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { host } from '@src/config/vars';
+import axios from 'axios';
 
 export const login = createAsyncThunk(
   'users/login',
@@ -9,7 +9,7 @@ export const login = createAsyncThunk(
       username: user.username,
       password: user.password,
     });
-    const token = res.data;
+    const token: string = res.data;
     return token;
   }
 );

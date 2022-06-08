@@ -9,10 +9,10 @@ const getSecret = () => {
 };
 export const generateNewToken = (username: string) => {
   const secret = getSecret();
-  return jwt.sign({ username }, secret, { expiresIn: '10s' });
+  return jwt.sign({ username }, secret, { expiresIn: '100s' });
 };
 
-export const verifyToken = async (token: string) => {
+export const verifyToken = (token: string) => {
   if (!token) return false;
   const secret = getSecret();
 
@@ -24,13 +24,13 @@ export const verifyToken = async (token: string) => {
   return true;
 };
 
-export const decodeToken = async (token: string) => {
-  if (!token) return false;
-  const secret = getSecret();
+export const decodeToken = async (token: string): Promise<jwt.JwtPayload | undefined> => {
+  if (!token) return;
 
   try {
-    return jwt.decode(token);
+    const decodedToken = jwt.decode(token);
+    return decodedToken as jwt.JwtPayload;
   } catch (e) {
-    return '';
+    return;
   }
 };

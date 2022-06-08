@@ -6,12 +6,14 @@
   height: 100%;
 
   form {
-    // width: 600px;
-    // max-width: 95%;
+    position: relative;
+    width: 200px;
+    max-width: 100%;
     display: block;
     padding: 2rem;
+    padding-top: 1rem;
     background-color: #ffffff;
-    border-radius: 5px;
+    // border-radius: 5px;
     box-shadow: rgba(255, 255, 255, 0.061) 0px 7px 29px 0px;
     display: flex;
     flex-direction: column;
@@ -22,6 +24,12 @@
     section {
       display: flex;
       flex-direction: column;
+    }
+    transition: height 400ms;
+
+    p {
+      // height: 3rem;
+      // transition: height 400ms;
     }
   }
 }

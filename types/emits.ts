@@ -1,0 +1,4 @@
+export default {
+  INVALID_TOKEN: 'INVALID_TOKEN',
+  NEW_MESSAGE: 'NEW_MESSAGE',
+};

@@ -21,8 +21,15 @@ const LoginView = () => {
       <DotsBackground />
       {/* <Register></Register> */}
       <div id='login-view'>
-        <form name='login' onSubmit={handleSubmit}>
-          <Input value={username} id='username' label='Username' onChange={(e) => setUsername(e.target.value)}></Input>
+        <form name='login' onSubmit={handleSubmit} autoComplete='off' spellCheck='false'>
+          <p className='form-info'></p>
+          <Input
+            indicated={true}
+            value={username}
+            id='username'
+            label='Username'
+            onChange={(e) => setUsername(e.target.value)}
+          ></Input>
           <Input value={password} id='password' label='Password' onChange={(e) => setPassword(e.target.value)}></Input>
           {/* <input value='Login' type='submit'></input> */}
           <Button>Login</Button>

@@ -2,6 +2,7 @@ import useSocket from '@src/hooks/useSocket';
 import { useAppSelector } from '@src/store/hooks';
 import { useState } from 'react';
 import { ChatMessage } from '../../../../types';
+import emits from '../../../../types/emits';
 
 const MainView = () => {
   const [room, setRoom] = useState('');
@@ -19,11 +20,11 @@ const MainView = () => {
 
   const sendMessage = () => {
     const roomMessage: ChatMessage = { room, message, token: token };
-    socket.emit('message', roomMessage);
+    socket.emit(emits.JOIN_ROOM_REQUEST, roomMessage);
   };
 
   return (
-    <>
+    <div style={{ padding: '2rem' }}>
       <h1>Welcome to the main page</h1>
       <label htmlFor='room'>Room</label>
       <br />
@@ -34,7 +35,7 @@ const MainView = () => {
       <input name='message' value={message} type='text' onChange={handleMessageInput} />
       <br />
       <button onClick={sendMessage}>Send message</button>
-    </>
+    </div>
   );
 };
 

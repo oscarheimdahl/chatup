@@ -1,11 +1,23 @@
 .button-component {
   border: none;
-  outline: solid black 1px;
+  outline: solid var(--black) 1px;
   transition: outline-offset 100ms;
   margin: 0.3rem;
   padding: 0.2rem;
-  background-color: var(--accent-3);
+  background-color: var(--accent-1);
   color: white;
+
+  &.underline {
+    outline: none;
+    background: transparent;
+    color: var(--black);
+    text-decoration: underline;
+  }
+
+  &.secondary {
+    background: transparent;
+    background-color: var(--accent-1-weak);
+  }
 
   &:focus,
   &:hover {

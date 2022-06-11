@@ -30,7 +30,7 @@ const handleMessage = async (socket: Socket, data: ChatMessage) => {
   const tokenData = await decodeToken(token);
   if (!ok) return socket.emit(emits.INVALID_TOKEN);
 
-  console.log(`${tokenData!.username} says: ${message} in room: ${room}`);
+  console.log(`${tokenData!.username} says: "${message}" in room: "${room}"`);
 };
 
 export default io;

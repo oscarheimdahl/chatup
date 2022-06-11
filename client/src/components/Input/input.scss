@@ -8,27 +8,23 @@
   input {
     border: none;
     outline: 1px solid black;
-    padding: 0.2rem;
-    transition: outline-offset 100ms;
+    padding: 0.3rem;
+    transition: outline-color 500ms;
     margin: 0.3rem;
 
-    &:focus {
-      outline-offset: 0.2rem;
-    }
-
     &.indicated {
-      border-right: 2px solid var(--danger);
+      outline-color: var(--danger);
+      outline-width: 2px;
     }
   }
 
   .indicator {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.6rem;
+    height: 0.2rem;
     background-color: black;
-    border-radius: 50%;
     position: absolute;
-    bottom: 0.75rem;
+    bottom: 0.8rem;
     left: -0.5rem;
-    background-color: var(--accent-2);
+    background-color: var(--danger);
   }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "chatup",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:oscarheimdahl/chatup.git",
+  "author": "oscarheimdahl <o.heimdahl@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "scripts": {
+    "dev": "concurrently \"cd client && yarn dev\" \"cd server && yarn dev-db\" \"cd server && yarn dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}

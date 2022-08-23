@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { host } from '@src/config/vars';
 import axios, { AxiosError } from 'axios';
+import { UserInitialState } from '../types';
+
+export const loggedIn = createAsyncThunk('users/loggedIn', async (token: string): Promise<string> => {
+  await axios.get(host + 'users/loggedin', { headers: { Authorization: `Bearer ${token}` } });
+  return token;
+});
 
 export const login = createAsyncThunk(
   'users/login',
@@ -29,8 +35,8 @@ export const register = createAsyncThunk('users/register', async (user: { userna
   });
 });
 
-const initialState = {
-  loggedIn: false,
+const initialState: UserInitialState = {
+  loggedIn: null,
   token: '',
   login: {
     forbidden: false,
@@ -47,11 +53,16 @@ export const userSlice = createSlice({
         ...initialState.login,
       };
     },
+    logout: (state) => {
+      state.loggedIn = false;
+      state.token = '';
+      window.localStorage.removeItem('token');
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
-      console.log('FULFILLED');
       state.token = action.payload;
+      window.localStorage.setItem('token', state.token);
       state.loggedIn = true;
     });
     builder.addCase(login.rejected, (state, action) => {
@@ -65,11 +76,18 @@ export const userSlice = createSlice({
     builder.addCase(register.fulfilled, (state, action) => {
       console.log('we have registered');
     });
+    builder.addCase(loggedIn.fulfilled, (state, action) => {
+      state.loggedIn = true;
+      state.token = action.payload;
+    });
+    builder.addCase(loggedIn.rejected, (state, action) => {
+      state.loggedIn = false;
+    });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { resetLoginInfo } = userSlice.actions;
+export const { resetLoginInfo, logout } = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 

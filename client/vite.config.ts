@@ -17,4 +17,12 @@ export default defineConfig({
       '@hooks': path.resolve(__dirname, './src/hooks'),
     },
   },
+  build: {
+    rollupOptions: {
+      // output: {
+      //   dir: 'bundle',
+      // },
+      // https://rollupjs.org/guide/en/#big-list-of-options
+    },
+  },
 });

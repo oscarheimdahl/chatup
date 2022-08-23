@@ -119,3 +119,54 @@
 2022-06-08 11:06:54.131 CEST [64578] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
 2022-06-08 11:06:54.149 CEST [64581] LOG:  database system was shut down at 2022-04-21 16:28:55 CEST
 2022-06-08 11:06:54.290 CEST [64578] LOG:  database system is ready to accept connections
+2022-06-19 11:46:43.386 CEST [64578] LOG:  received smart shutdown request
+2022-06-19 11:46:43.398 CEST [64578] LOG:  background worker "logical replication launcher" (PID 64587) exited with exit code 1
+2022-06-19 11:46:43.400 CEST [64582] LOG:  shutting down
+2022-06-19 11:46:43.431 CEST [64578] LOG:  database system is shut down
+2022-08-12 13:33:11.100 CEST [12789] LOG:  starting PostgreSQL 14.2 on aarch64-apple-darwin21.3.0, compiled by Apple clang version 13.0.0 (clang-1300.0.29.30), 64-bit
+2022-08-12 13:33:11.112 CEST [12789] LOG:  listening on IPv6 address "::1", port 5432
+2022-08-12 13:33:11.112 CEST [12789] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2022-08-12 13:33:11.139 CEST [12789] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2022-08-12 13:33:11.165 CEST [12790] LOG:  database system was shut down at 2022-06-19 11:46:43 CEST
+2022-08-12 13:33:11.191 CEST [12789] LOG:  database system is ready to accept connections
+2022-08-15 08:37:06.635 CEST [12789] LOG:  server process (PID 39572) was terminated by signal 9: Killed: 9
+2022-08-15 08:37:06.636 CEST [12789] LOG:  terminating any other active server processes
+2022-08-15 08:37:06.645 CEST [12789] LOG:  all server processes terminated; reinitializing
+2022-08-15 08:37:06.660 CEST [12789] LOG:  startup process (PID 39573) was terminated by signal 9: Killed: 9
+2022-08-15 08:37:06.660 CEST [12789] LOG:  aborting startup due to startup process failure
+2022-08-15 08:37:06.662 CEST [12789] LOG:  database system is shut down
+2022-08-23 18:46:43.054 CEST [43674] LOG:  starting PostgreSQL 14.4 on aarch64-apple-darwin21.5.0, compiled by Apple clang version 13.1.6 (clang-1316.0.21.2.5), 64-bit
+2022-08-23 18:46:43.060 CEST [43674] LOG:  listening on IPv6 address "::1", port 5432
+2022-08-23 18:46:43.060 CEST [43674] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2022-08-23 18:46:43.062 CEST [43674] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2022-08-23 18:46:43.088 CEST [43675] LOG:  database system was interrupted; last known up at 2022-08-12 13:38:11 CEST
+2022-08-23 18:46:47.039 CEST [43675] LOG:  database system was not properly shut down; automatic recovery in progress
+2022-08-23 18:46:47.042 CEST [43675] LOG:  redo starts at 0/26C6C20
+2022-08-23 18:46:47.042 CEST [43675] LOG:  invalid record length at 0/26C6D08: wanted 24, got 0
+2022-08-23 18:46:47.042 CEST [43675] LOG:  redo done at 0/26C6CD0 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2022-08-23 18:46:47.048 CEST [43674] LOG:  database system is ready to accept connections
+2022-08-23 19:21:32.580 CEST [64453] FATAL:  lock file "postmaster.pid" already exists
+2022-08-23 19:21:32.580 CEST [64453] HINT:  Is another postmaster (PID 43674) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-08-23 19:23:34.994 CEST [43674] LOG:  received fast shutdown request
+2022-08-23 19:23:34.994 CEST [43674] LOG:  aborting any active transactions
+2022-08-23 19:23:34.995 CEST [43674] LOG:  background worker "logical replication launcher" (PID 43691) exited with exit code 1
+2022-08-23 19:23:34.995 CEST [43686] LOG:  shutting down
+2022-08-23 19:23:35.030 CEST [43674] LOG:  database system is shut down
+2022-08-23 19:24:26.453 CEST [67058] LOG:  starting PostgreSQL 14.4 on aarch64-apple-darwin21.5.0, compiled by Apple clang version 13.1.6 (clang-1316.0.21.2.5), 64-bit
+2022-08-23 19:24:26.461 CEST [67058] LOG:  listening on IPv6 address "::1", port 5432
+2022-08-23 19:24:26.461 CEST [67058] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2022-08-23 19:24:26.463 CEST [67058] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2022-08-23 19:24:26.472 CEST [67059] LOG:  database system was shut down at 2022-08-23 19:23:35 CEST
+2022-08-23 19:24:26.475 CEST [67058] LOG:  database system is ready to accept connections
+2022-08-23 19:27:31.378 CEST [68340] FATAL:  lock file "postmaster.pid" already exists
+2022-08-23 19:27:31.378 CEST [68340] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-08-23 19:34:18.696 CEST [71145] FATAL:  lock file "postmaster.pid" already exists
+2022-08-23 19:34:18.696 CEST [71145] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-08-23 19:35:45.557 CEST [71996] FATAL:  lock file "postmaster.pid" already exists
+2022-08-23 19:35:45.557 CEST [71996] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-08-23 19:36:08.034 CEST [72238] FATAL:  lock file "postmaster.pid" already exists
+2022-08-23 19:36:08.034 CEST [72238] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-08-23 19:48:10.570 CEST [77304] FATAL:  lock file "postmaster.pid" already exists
+2022-08-23 19:48:10.570 CEST [77304] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-08-23 20:02:42.561 CEST [87655] FATAL:  lock file "postmaster.pid" already exists
+2022-08-23 20:02:42.561 CEST [87655] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?

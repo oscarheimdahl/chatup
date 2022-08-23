@@ -11,6 +11,7 @@ const DotsBackground = () => {
 
       setN(xDots * yDots);
     };
+
     window.addEventListener('resize', updateDots);
     updateDots();
     return () => {
@@ -22,15 +23,35 @@ const DotsBackground = () => {
     <div id='dots-background'>
       <div className='dots'>
         {[...Array(n)].map((_, i) => {
+          const animDur = Math.floor(Math.random() * 20 + 15);
+
           return (
             <div key={i} className='dot-container'>
-              <div key={i} className='dot'></div>
+              {/* <div key={i} className='dot'></div> */}
+              <svg viewBox='0 0 100 100'>
+                <ellipse
+                  style={{ animationDuration: animDur + 's' }}
+                  className={`dot ${floatType()}`}
+                  cx='50'
+                  cy='50'
+                  rx='6'
+                  ry='6'
+                />
+              </svg>
             </div>
           );
         })}
       </div>
     </div>
   );
+};
+
+const floatType = () => {
+  const rand = Math.random();
+  if (rand < 0.2) return 'float1';
+  else if (rand < 0.6) return 'float2';
+  else if (rand < 0.7) return 'float3';
+  return '';
 };
 
 export default DotsBackground;

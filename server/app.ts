@@ -1,16 +1,17 @@
-import * as path from 'path';
-import * as express from 'express';
-import userRoutes from './routes/user';
-import * as dotenv from 'dotenv';
-import roomRoutes from './routes/chatroom';
 import * as cors from 'cors';
+import * as dotenv from 'dotenv';
+import * as express from 'express';
+import * as path from 'path';
+import roomRoutes from './routes/chatroom';
 import io from './routes/socket';
+import userRoutes from './routes/user';
 
 dotenv.config();
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(express.json());
+
 app.use('/users', userRoutes);
 app.use('/rooms', roomRoutes);
 

@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { verifyToken } from '../db/token';
 
-export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split('Bearer: ')[1];
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers.authorization?.split('Bearer ')[1];
   if (!token) {
     return res.status(403).end();
   }
   try {
-    const ok = await verifyToken(token);
+    const ok = verifyToken(token);
     if (!ok) {
       return res.status(403).end();
     }

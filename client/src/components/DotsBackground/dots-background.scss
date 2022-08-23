@@ -1,0 +1,96 @@
+#dots-background {
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(var(--accent-1), var(--accent-2));
+  overflow: hidden;
+  position: absolute;
+  display: grid;
+  place-content: center;
+  z-index: -1;
+
+  .dots {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+
+    .dot-container {
+      width: 100px;
+      height: 100px;
+      flex-grow: 1;
+      display: grid;
+      place-items: center;
+
+      .dot {
+        // transition-duration: 2s;
+        transition: transform 2s;
+        fill: var(--accent-3);
+
+        &.float1 {
+          animation: float1 20s infinite;
+        }
+        &.float2 {
+          animation: float2 14s infinite;
+        }
+        &.float3 {
+          animation-direction: reverse;
+          animation: float3 9s infinite;
+        }
+      }
+    }
+  }
+}
+
+@keyframes float1 {
+  0% {
+    transform: translateY(0px);
+  }
+  25% {
+    transform: translateX(10px) translateY(10px);
+  }
+  50% {
+    transform: translateY(20px) scale(1.1);
+  }
+  75% {
+    transform: translateX(-10px) translateY(10px);
+  }
+  0% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes float2 {
+  0% {
+    transform: translateY(0px);
+  }
+  25% {
+    transform: translateX(-6px) translateY(6px) scale(0.9);
+  }
+  50% {
+    transform: translateY(12px);
+  }
+  75% {
+    transform: translateX(6px) translateY(6px) scale(0.9);
+  }
+  0% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes float3 {
+  0% {
+    transform: translateY(0px);
+  }
+  25% {
+    transform: translateX(-6px) translateY(6px) scale(0.8);
+  }
+  50% {
+    transform: translateY(12px);
+  }
+  75% {
+    transform: translateX(6px) translateY(6px);
+  }
+  0% {
+    transform: translateY(0px);
+  }
+}

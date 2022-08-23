@@ -1,5 +1,5 @@
 import Button from '@src/components/Button/Button';
-import DotsBackground from '@src/components/DotsBackground';
+import DotsBackground from '@src/components/DotsBackground/DotsBackground';
 import Input from '@src/components/Input/Input';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { login, resetLoginInfo } from '@store/slices/userSlice';
@@ -21,13 +21,10 @@ const LoginView = () => {
   };
 
   return (
-    <>
-      <DotsBackground />
-      <div id='login-view'>
-        <LoginForm show={showLogin} showRegister={handleShowRegister}></LoginForm>
-        <RegisterForm show={showRegister} showLogin={handleShowLogin}></RegisterForm>
-      </div>
-    </>
+    <div id='login-view'>
+      <LoginForm show={showLogin} showRegister={handleShowRegister}></LoginForm>
+      <RegisterForm show={showRegister} showLogin={handleShowLogin}></RegisterForm>
+    </div>
   );
 };
 

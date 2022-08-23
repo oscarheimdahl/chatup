@@ -1,8 +1,11 @@
 import useSocket from '@src/hooks/useSocket';
-import { useAppSelector } from '@src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useState } from 'react';
 import { ChatMessage } from '../../../../types';
 import emits from '../../../../types/emits';
+import { logout } from '@store/slices/userSlice';
+
+import './main-view.scss';
 
 const MainView = () => {
   const [room, setRoom] = useState('');
@@ -10,6 +13,7 @@ const MainView = () => {
 
   const socket = useSocket();
   const token = useAppSelector((s) => s.user.token);
+  const dispatch = useAppDispatch();
 
   const handleRoomInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoom(e.target.value);
@@ -23,8 +27,10 @@ const MainView = () => {
     socket.emit(emits.JOIN_ROOM_REQUEST, roomMessage);
   };
 
+  const handleLogout = () => dispatch(logout());
+
   return (
-    <div style={{ padding: '2rem' }}>
+    <div id='main-view' style={{ padding: '2rem' }}>
       <h1>Welcome to the main page</h1>
       <label htmlFor='room'>Room</label>
       <br />
@@ -35,6 +41,7 @@ const MainView = () => {
       <input name='message' value={message} type='text' onChange={handleMessageInput} />
       <br />
       <button onClick={sendMessage}>Send message</button>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };

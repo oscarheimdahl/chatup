@@ -6,47 +6,61 @@
   height: 100%;
   flex-direction: column;
   overflow: hidden;
+  transition: transform 400ms;
 
-  #login-form-container {
-    position: absolute;
-    width: 15rem;
-    max-width: 100%;
-    background-color: #ffffff;
-    box-shadow: rgba(255, 255, 255, 0.061) 0px 7px 29px 0px;
-    transition: transform 700ms;
-    // transition-timing-function: cubic-bezier(0.44, -0.08, 1, -0.29);
-    // transition-timing-function: cubic-bezier(0.56, 1.08, 0, 1.29);
-    padding: 1rem;
+  .col-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .login-title {
+    color: white;
+    text-align: left;
+    width: 17rem;
+    padding-left: 1rem;
+    font-weight: 400;
+    font-family: Mukta;
+  }
+
+  #form-bg {
+    background-color: white;
+    display: flex;
+    gap: 50%;
+    width: 17rem;
+    box-shadow: rgba(0, 0, 0, 0.312) 0px 7px 29px 0px;
+    position: relative;
     overflow-x: hidden;
 
-    form {
+    .form-container {
+      flex-shrink: 0;
+      width: 100%;
+      padding: 1rem;
+      transition: transform 500ms;
+      overflow-x: hidden;
+
+      & > * {
+        padding-top: 0.5rem;
+      }
+    }
+
+    #login-form-container {
+      height: 100%;
+      width: 100%;
+      display: flex;
       display: flex;
       flex-direction: column;
       gap: 1rem;
-
-      #error-text {
-        height: 2rem;
-        padding: 0 0.5rem;
-        font-size: 0.9rem;
-        text-align: center;
-        transition: opacity 400ms;
-        transform: translateX(-100%);
-        opacity: 0;
-
-        &.show {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
+      justify-content: space-between;
 
       section {
         display: flex;
         flex-direction: column;
 
-        #register-button {
+        .register-button {
           background: transparent;
           border: none;
-          margin-top: 0.5rem;
+          // margin-top: 0.5rem;
           text-decoration: underline;
           display: block;
 
@@ -57,10 +71,39 @@
       }
     }
 
-    // &:hover {
-    //   transition: transform 2s;
-    //   transform: rotate3d(0, 0.5, 0, 360deg);
-    //   // display: none;
-    // }
+    #register-form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: space-between;
+      section {
+        display: flex;
+        flex-direction: column;
+      }
+      .register-button {
+        background-color: var(--accent-3);
+      }
+    }
+  }
+
+  #error-text {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: opacity 400ms;
+    transform: translateX(-100%);
+    opacity: 0;
+
+    &.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .scoot {
+    transform: translateX(-150%);
   }
 }

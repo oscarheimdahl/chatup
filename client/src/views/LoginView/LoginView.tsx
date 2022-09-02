@@ -2,38 +2,65 @@ import Button from '@src/components/Button/Button';
 import DotsBackground from '@src/components/DotsBackground/DotsBackground';
 import Input from '@src/components/Input/Input';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
-import { login, resetLoginInfo } from '@store/slices/userSlice';
-import { FormEvent, useMemo, useState } from 'react';
+import { login, register, resetLoginError, resetRegisterError } from '@store/slices/userSlice';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import './login-view.scss';
 
+interface User {
+  username: string;
+  password: string;
+}
+
 const LoginView = () => {
-  const [showLogin, setShowLogin] = useState(true);
   const [showRegister, setShowRegister] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState<User>();
 
   const handleShowRegister = () => {
-    setShowLogin(false);
-    setTimeout(() => setShowRegister(true), 700);
+    setShowRegister(true);
   };
 
-  const handleShowLogin = () => {
+  const handleShowLogin = (registeredUser?: User) => {
     setShowRegister(false);
-    setTimeout(() => setShowLogin(true), 700);
+    setRegisteredUser(registeredUser);
   };
 
   return (
     <div id='login-view'>
-      <LoginForm show={showLogin} showRegister={handleShowRegister}></LoginForm>
-      <RegisterForm show={showRegister} showLogin={handleShowLogin}></RegisterForm>
+      <h1 className='login-title'>{showRegister ? 'Register' : 'Login'}</h1>
+      <div id='form-bg'>
+        <LoginForm
+          registeredUser={registeredUser}
+          className={showRegister ? 'scoot' : ''}
+          showRegister={handleShowRegister}
+        ></LoginForm>
+        <RegisterForm className={showRegister ? 'scoot' : ''} showLogin={handleShowLogin}></RegisterForm>
+      </div>
     </div>
   );
 };
 
-const LoginForm = ({ show, showRegister }: { show: boolean; showRegister: () => void }) => {
+const LoginForm = ({
+  registeredUser,
+  showRegister,
+  className,
+}: {
+  registeredUser: User | undefined;
+  showRegister: () => void;
+  className: string;
+}) => {
   const [username, setUsername] = useState('oscar');
   const [password, setPassword] = useState('heimdahl');
   const [missingFields, setMissingFields] = useState(false);
-
+  const usernameInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!registeredUser?.password && !registeredUser?.username) return;
+    const { username, password } = registeredUser;
+    if (username) setUsername(username);
+    if (password) setPassword(password);
+    usernameInputRef.current?.focus();
+  }, [registeredUser]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -42,25 +69,30 @@ const LoginForm = ({ show, showRegister }: { show: boolean; showRegister: () => 
   };
 
   let errorText = '';
-  const badCredentials = useAppSelector((s) => s.user.login.forbidden);
+  const badCredentials = useAppSelector((s) => s.user.loginError.forbidden);
   if (missingFields && !username) errorText = 'Please enter a username.';
   if (missingFields && !password) errorText = 'Please enter a password.';
   if (missingFields && !password && !username) errorText = 'Please enter a username and password.';
   if (badCredentials) errorText = 'Wrong username or password.';
 
-  const randomDisplacementStyle = useMemo(() => getRandomDisplacement(show), [show]);
-
   return (
-    <div style={randomDisplacementStyle} id='login-form-container'>
-      <form name='login' onSubmit={handleSubmit} autoComplete='off' spellCheck='false'>
-        <p className='form-info'></p>
+    <form
+      id='login-form-container'
+      name='login'
+      onSubmit={handleSubmit}
+      autoComplete='off'
+      spellCheck='false'
+      className={className + ' form-container'}
+    >
+      <section className='col-section'>
         <Input
+          reference={usernameInputRef}
           indicated={badCredentials || (!username && missingFields)}
           value={username}
           name='username'
           label='Username'
           onChange={(e) => {
-            if (badCredentials) dispatch(resetLoginInfo());
+            if (badCredentials) dispatch(resetLoginError());
             if (missingFields) setMissingFields(false);
             setUsername(e.target.value);
           }}
@@ -72,48 +104,21 @@ const LoginForm = ({ show, showRegister }: { show: boolean; showRegister: () => 
           label='Password'
           type='password'
           onChange={(e) => {
-            if (badCredentials) dispatch(resetLoginInfo());
+            if (badCredentials) dispatch(resetLoginError());
             if (missingFields) setMissingFields(false);
             setPassword(e.target.value);
           }}
         ></Input>
-        <ErrorText>{errorText}</ErrorText>
-        <section>
-          <Button>Login</Button>
-          <Button type='button' onClick={showRegister} underline className='register-button'>
-            Register
-          </Button>
-        </section>
-      </form>
-    </div>
+      </section>
+      <ErrorText>{errorText}</ErrorText>
+      <section>
+        <Button>Login</Button>
+        <Button type='button' onClick={showRegister} underline className='register-button'>
+          Register
+        </Button>
+      </section>
+    </form>
   );
-};
-
-const getRandomDisplacement = (show: boolean) => {
-  if (show) return { transform: 'translateX(0) translateY(0) ' };
-  const randomDirection = Math.floor(Math.random() * 4);
-  switch (randomDirection) {
-    case 0:
-      return {
-        transform: 'translateX(100vw) translateY(0)',
-        // transitionTimingFunction: 'cubic-bezier(0.56, 1.08, 0, 1.29)',
-      };
-    case 1:
-      return {
-        transform: 'translateX(-100vw) translateY(0)',
-        // transitionTimingFunction: 'cubic-bezier(0.56, 1.08, 0, 1.29)',
-      };
-    case 2:
-      return {
-        transform: 'translateX(0) translateY(100vh)',
-        // transitionTimingFunction: 'cubic-bezier(0.56, 1.08, 0, 1.29)',
-      };
-    case 3:
-      return {
-        transform: 'translateX(0) translateY(-100vh)',
-        // transitionTimingFunction: 'cubic-bezier(0.56, 1.08, 0, 1.29)',
-      };
-  }
 };
 
 interface ErrorTextProps {
@@ -128,64 +133,137 @@ const ErrorText = ({ children }: ErrorTextProps) => {
   );
 };
 
-const RegisterForm = ({ show, showLogin }: { show: boolean; showLogin: () => void }) => {
-  const [username, setUsername] = useState('oscar');
-  const [password, setPassword] = useState('heimdahl');
-  const [missingFields, setMissingFields] = useState(false);
+const RegisterForm = ({ showLogin, className }: { showLogin: (user?: User) => void; className: string }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [errorText, setErrorText] = useState('');
+  const [movingToLogin, setMovingToLogin] = useState(false);
 
   const dispatch = useAppDispatch();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!username || !password) return setMissingFields(true);
-    dispatch(login({ username, password }));
+  const usernameTaken = useAppSelector((s) => s.user.registerInfo.usernameTaken);
+  useEffect(() => {
+    if (usernameTaken) setErrorText('Username taken, sorry.');
+  }, [usernameTaken]);
+
+  const success = useAppSelector((s) => s.user.registerInfo.success);
+  useEffect(() => {
+    if (!success) return;
+    setErrorText('Successful registration!');
+    setMovingToLogin(true);
+    const showLoginTimeout = setTimeout(() => {
+      showLogin({ username, password });
+      resetRegister();
+    }, 2000);
+    return () => clearTimeout(showLoginTimeout);
+  }, [success]);
+
+  const resetRegister = () => {
+    setUsername('');
+    setPassword('');
+    setPassword2('');
+    setErrorText('');
+    dispatch(resetRegisterError());
   };
 
-  let errorText = '';
-  const badCredentials = useAppSelector((s) => s.user.login.forbidden);
-  if (missingFields && !username) errorText = 'Please enter a username.';
-  if (missingFields && !password) errorText = 'Please enter a password.';
-  if (missingFields && !password && !username) errorText = 'Please enter a username and password.';
-  if (badCredentials) errorText = 'Wrong username or password.';
+  const usernameMinLength = 5;
+  const passwordMinLength = 8;
+  const usernameTooShort = username.length < usernameMinLength;
+  const passwordTooShort = password.length < passwordMinLength;
 
-  const randomDisplacementStyle = useMemo(() => getRandomDisplacement(show), [show]);
+  const passwordMismatch = password !== password2;
+  // prettier-ignore
+  const checkError = () => {
+    let err = '';
+    if (passwordTooShort)                       err = `Password must be atleast ${passwordMinLength} characters.`;
+    if (usernameTooShort)                       err = `Username must be atleast ${usernameMinLength} characters.`;
+    if (passwordMismatch)                       err = 'Passwords dont match.';
+    if (!username)                              err = 'Please enter a username.';
+    if (!password && !password2)                err = 'Please enter a password.';
+    if ((!password || !password2) && !username) err = 'Please enter a username and password.';
+    if (err) setErrorText(err);
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (movingToLogin) return;
+    checkError();
+    if (errorText) return;
+    dispatch(register({ username, password }));
+  };
+
+  const usernameInput = () => (
+    <Input
+      indicated={!!errorText && (!username || usernameTooShort)}
+      value={username}
+      name='username'
+      label='Username'
+      onChange={(e) => {
+        if (errorText) {
+          dispatch(resetRegisterError());
+          setErrorText('');
+        }
+        setUsername(e.target.value.trim());
+      }}
+    ></Input>
+  );
+
+  const passwordInput1 = () => (
+    <Input
+      indicated={!!errorText && (!password || passwordMismatch || passwordTooShort)}
+      value={password}
+      name='password'
+      label='Password (x2)'
+      type='password'
+      onChange={(e) => {
+        if (errorText) {
+          dispatch(resetRegisterError());
+          setErrorText('');
+        }
+        setPassword(e.target.value);
+      }}
+    ></Input>
+  );
+
+  const passwordInput2 = () => (
+    <Input
+      indicated={!!errorText && (!password2 || passwordMismatch || passwordTooShort)}
+      value={password2}
+      name='password'
+      type='password'
+      onChange={(e) => {
+        if (errorText) {
+          dispatch(resetRegisterError());
+          setErrorText('');
+        }
+        setPassword2(e.target.value);
+      }}
+    ></Input>
+  );
 
   return (
-    <div style={randomDisplacementStyle} id='login-form-container'>
-      <form name='login' onSubmit={handleSubmit} autoComplete='off' spellCheck='false'>
-        <p className='form-info'></p>
-        <Input
-          indicated={badCredentials || (!username && missingFields)}
-          value={username}
-          name='username'
-          label='Username'
-          onChange={(e) => {
-            if (badCredentials) dispatch(resetLoginInfo());
-            if (missingFields) setMissingFields(false);
-            setUsername(e.target.value);
-          }}
-        ></Input>
-        <Input
-          indicated={badCredentials || (!password && missingFields)}
-          value={password}
-          name='password'
-          label='Password'
-          type='password'
-          onChange={(e) => {
-            if (badCredentials) dispatch(resetLoginInfo());
-            if (missingFields) setMissingFields(false);
-            setPassword(e.target.value);
-          }}
-        ></Input>
-        <ErrorText>{errorText}</ErrorText>
-        <section>
-          <Button>Login</Button>
-          <Button type='button' onClick={showLogin} underline className='register-button'>
-            Register
-          </Button>
-        </section>
-      </form>
-    </div>
+    <form
+      id='register-form-container'
+      className={className + ' form-container'}
+      name='register'
+      onSubmit={handleSubmit}
+      autoComplete='off'
+      spellCheck='false'
+    >
+      <section className='col-section'>
+        {usernameInput()}
+        {passwordInput1()}
+        {passwordInput2()}
+      </section>
+      <ErrorText>{errorText}</ErrorText>
+      <section>
+        <Button className='register-button'>Register</Button>
+        <Button type='button' onClick={showLogin} underline>
+          Back
+        </Button>
+      </section>
+    </form>
   );
 };
 

@@ -8,7 +8,6 @@ import { useAppSelector } from './store/hooks';
 const View = () => {
   const loggedIn = useAppSelector((state) => state.user.loggedIn);
 
-  console.log(loggedIn);
   if (loggedIn === null) return <></>;
   if (!loggedIn) return <LoginView />;
 

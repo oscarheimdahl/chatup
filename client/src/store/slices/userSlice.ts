@@ -13,14 +13,14 @@ export const login = createAsyncThunk(
   async (
     user: { username: string; password: string },
     { rejectWithValue }
-  ): Promise<string | ReturnType<typeof rejectWithValue>> => {
+  ): Promise<{ token: string; username: string } | ReturnType<typeof rejectWithValue>> => {
     try {
       const res = await axios.post(host + 'users/login', {
         username: user.username,
         password: user.password,
       });
       const token: string = res.data;
-      return token;
+      return { token, username: user.username };
     } catch (e) {
       const axiosError = e as AxiosError;
       return rejectWithValue(axiosError?.response?.status);
@@ -46,6 +46,7 @@ export const register = createAsyncThunk(
 const initialState: UserInitialState = {
   loggedIn: null,
   token: '',
+  username: '',
   loginError: {
     forbidden: false,
     serverUnreachable: false,
@@ -78,7 +79,8 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
-      state.token = action.payload;
+      state.token = action.payload.token;
+      state.username = action.payload.username;
       window.localStorage.setItem('token', state.token);
       state.loggedIn = true;
     });

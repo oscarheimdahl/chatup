@@ -27,7 +27,7 @@ const LoginView = () => {
   return (
     <div id='login-view'>
       <h1 className='login-title'>{showRegister ? 'Register' : 'Login'}</h1>
-      <div id='form-bg'>
+      <div id='form-bg' className='floating-window'>
         <LoginForm
           registeredUser={registeredUser}
           className={showRegister ? 'scoot' : ''}
@@ -111,9 +111,9 @@ const LoginForm = ({
         ></Input>
       </section>
       <ErrorText>{errorText}</ErrorText>
-      <section>
+      <section className='buttons'>
         <Button>Login</Button>
-        <Button type='button' onClick={showRegister} underline className='register-button'>
+        <Button type='button' onClick={showRegister} underline>
           Register
         </Button>
       </section>
@@ -178,6 +178,7 @@ const RegisterForm = ({ showLogin, className }: { showLogin: (user?: User) => vo
     let err = '';
     if (passwordTooShort)                       err = `Password must be atleast ${passwordMinLength} characters.`;
     if (usernameTooShort)                       err = `Username must be atleast ${usernameMinLength} characters.`;
+    if (usernameTooShort && passwordTooShort)   err = `Username and password too short.`;
     if (passwordMismatch)                       err = 'Passwords dont match.';
     if (!username)                              err = 'Please enter a username.';
     if (!password && !password2)                err = 'Please enter a password.';
@@ -196,6 +197,7 @@ const RegisterForm = ({ showLogin, className }: { showLogin: (user?: User) => vo
   const usernameInput = () => (
     <Input
       indicated={!!errorText && (!username || usernameTooShort)}
+      placeholder='Atleast 5 characters'
       value={username}
       name='username'
       label='Username'
@@ -216,6 +218,7 @@ const RegisterForm = ({ showLogin, className }: { showLogin: (user?: User) => vo
       name='password'
       label='Password (x2)'
       type='password'
+      placeholder='Atleast 8 characters'
       onChange={(e) => {
         if (errorText) {
           dispatch(resetRegisterError());
@@ -232,6 +235,7 @@ const RegisterForm = ({ showLogin, className }: { showLogin: (user?: User) => vo
       value={password2}
       name='password'
       type='password'
+      placeholder='Atleast 8 characters'
       onChange={(e) => {
         if (errorText) {
           dispatch(resetRegisterError());
@@ -257,7 +261,7 @@ const RegisterForm = ({ showLogin, className }: { showLogin: (user?: User) => vo
         {passwordInput2()}
       </section>
       <ErrorText>{errorText}</ErrorText>
-      <section>
+      <section className='buttons'>
         <Button className='register-button'>Register</Button>
         <Button type='button' onClick={showLogin} underline>
           Back

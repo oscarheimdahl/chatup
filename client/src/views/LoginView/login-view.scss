@@ -19,16 +19,14 @@
     text-align: left;
     width: 17rem;
     padding-left: 1rem;
+    padding-bottom: 0.2rem;
     font-weight: 400;
-    font-family: Mukta;
+    text-shadow: black 0px 0px 10px;
   }
 
   #form-bg {
-    background-color: white;
-    display: flex;
     gap: 50%;
     width: 17rem;
-    box-shadow: rgba(0, 0, 0, 0.312) 0px 7px 29px 0px;
     position: relative;
     overflow-x: hidden;
 
@@ -56,18 +54,6 @@
       section {
         display: flex;
         flex-direction: column;
-
-        .register-button {
-          background: transparent;
-          border: none;
-          // margin-top: 0.5rem;
-          text-decoration: underline;
-          display: block;
-
-          &:hover {
-            cursor: pointer;
-          }
-        }
       }
     }
 
@@ -79,9 +65,6 @@
       section {
         display: flex;
         flex-direction: column;
-      }
-      .register-button {
-        background-color: var(--accent-3);
       }
     }
   }
@@ -105,5 +88,9 @@
 
   .scoot {
     transform: translateX(-150%);
+  }
+
+  .buttons {
+    gap: 0.5rem;
   }
 }

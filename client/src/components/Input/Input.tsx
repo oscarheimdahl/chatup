@@ -8,13 +8,15 @@ interface InputProps {
   indicated?: boolean;
   type?: 'password' | 'text' | 'number';
   reference?: React.RefObject<HTMLInputElement>;
+  placeholder?: string;
 }
 
-const Input = ({ reference, value, onChange, name, label, indicated, type = 'text' }: InputProps) => {
+const Input = ({ placeholder, reference, value, onChange, name, label, indicated, type = 'text' }: InputProps) => {
   return (
     <section className='input-section'>
       {label && <label htmlFor={name}>{label}</label>}
       <input
+        placeholder={placeholder}
         ref={reference}
         className={indicated ? 'indicated' : ''}
         value={value}

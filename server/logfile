@@ -176,3 +176,26 @@
 2022-09-02 21:15:49.705 CEST [59752] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
 2022-09-02 21:16:19.449 CEST [60069] FATAL:  lock file "postmaster.pid" already exists
 2022-09-02 21:16:19.449 CEST [60069] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-03 09:46:19.827 CEST [86824] FATAL:  lock file "postmaster.pid" already exists
+2022-09-03 09:46:19.827 CEST [86824] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-03 10:22:12.740 CEST [7880] FATAL:  lock file "postmaster.pid" already exists
+2022-09-03 10:22:12.740 CEST [7880] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-03 16:53:28.943 CEST [67117] FATAL:  lock file "postmaster.pid" already exists
+2022-09-03 16:53:28.943 CEST [67117] HINT:  Is another postmaster (PID 67058) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-04 10:04:07.484 CEST [84752] FATAL:  terminating connection due to administrator command
+2022-09-04 10:04:07.566 CEST [67058] LOG:  received smart shutdown request
+2022-09-04 10:04:07.568 CEST [67058] LOG:  background worker "logical replication launcher" (PID 67065) exited with exit code 1
+2022-09-04 10:04:07.735 CEST [67060] LOG:  shutting down
+2022-09-04 10:04:07.853 CEST [67058] LOG:  database system is shut down
+2022-09-04 10:05:49.172 CEST [3042] LOG:  starting PostgreSQL 14.4 on aarch64-apple-darwin21.5.0, compiled by Apple clang version 13.1.6 (clang-1316.0.21.2.5), 64-bit
+2022-09-04 10:05:49.174 CEST [3042] LOG:  listening on IPv6 address "::1", port 5432
+2022-09-04 10:05:49.175 CEST [3042] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2022-09-04 10:05:49.176 CEST [3042] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2022-09-04 10:05:49.192 CEST [3043] LOG:  database system was shut down at 2022-09-04 10:04:07 CEST
+2022-09-04 10:05:49.214 CEST [3042] LOG:  database system is ready to accept connections
+2022-09-04 15:40:04.059 CEST [18552] FATAL:  lock file "postmaster.pid" already exists
+2022-09-04 15:40:04.059 CEST [18552] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-04 15:51:45.490 CEST [22281] FATAL:  lock file "postmaster.pid" already exists
+2022-09-04 15:51:45.490 CEST [22281] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-04 16:30:20.858 CEST [38133] FATAL:  lock file "postmaster.pid" already exists
+2022-09-04 16:30:20.858 CEST [38133] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?

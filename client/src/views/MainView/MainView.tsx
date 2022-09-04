@@ -1,11 +1,10 @@
 import useSocket from '@src/hooks/useSocket';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useState } from 'react';
-import { ChatMessage } from '../../../../types';
-import emits from '../../../../types/emits';
-import { logout } from '@store/slices/userSlice';
 
 import './main-view.scss';
+import Input from '@src/components/Input/Input';
+import Button from '@src/components/Button/Button';
 
 const MainView = () => {
   const [room, setRoom] = useState('');
@@ -18,30 +17,28 @@ const MainView = () => {
   const handleRoomInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoom(e.target.value);
   };
-  const handleMessageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.target.value);
-  };
 
-  const sendMessage = () => {
-    const roomMessage: ChatMessage = { room, message, token: token };
-    socket.emit(emits.JOIN_ROOM_REQUEST, roomMessage);
-  };
+  const joinRoom = () => {
+    console.log('joining room...');
+    socket.emit('JOIN_ROOM_REQUEST', room, token);
 
-  const handleLogout = () => dispatch(logout());
+    socket.once('JOINED_ROOM', ({ old }) => {
+      console.log(`joined room, ${room}. Old room: ${old}`);
+    });
+  };
 
   return (
-    <div id='main-view' style={{ padding: '2rem' }}>
-      <h1>Welcome to the main page</h1>
-      <label htmlFor='room'>Room</label>
-      <br />
-      <input name='room' value={room} type='text' onChange={handleRoomInput} />
-      <br />
-      <label htmlFor='message'>message</label>
-      <br />
-      <input name='message' value={message} type='text' onChange={handleMessageInput} />
-      <br />
-      <button onClick={sendMessage}>Send message</button>
-      <button onClick={handleLogout}>Logout</button>
+    <div id='main-view'>
+      <div id='main-view-content' className=' floating-window'>
+        <Input
+          placeholder={'Room name...'}
+          label='Join a chat room'
+          name='room-name'
+          onChange={handleRoomInput}
+          value={room}
+        />
+        <Button onClick={joinRoom}>Join</Button>
+      </div>
     </div>
   );
 };

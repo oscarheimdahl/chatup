@@ -1,36 +1,41 @@
 import { Server, Socket } from 'socket.io';
-import { ChatMessage } from '../../types';
-import emits from '../../types/emits';
-import { decodeToken, verifyToken } from '../db/token';
+import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from '../../types/emits';
+import { createChatroom, getChatroom } from '../db/chatroom';
+import { decodeToken } from '../db/token';
 
-const io = new Server();
-// io.listen(3001, { cors: { origin: 'null' } });
+type MySocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
+const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>();
 
 io.use(async (socket, next) => {
   let handshake = socket.handshake;
-  console.log('first');
   try {
-    const ok = verifyToken(handshake.auth.token);
-    if (ok) next();
-    else return socket.emit('invalid-token');
+    const decodedToken = await decodeToken(handshake.auth.token);
+    if (!decodedToken) return socket.emit('INVALID_TOKEN');
+    if (decodedToken.exp && Date.now() >= decodedToken.exp * 1000) {
+      return socket.emit('INVALID_TOKEN');
+    }
+    socket.data.username = decodedToken.username;
+    next();
   } catch (e) {
-    console.log('Error verifying token');
-    socket.emit('500');
+    console.log('EXPIRED');
     return;
   }
 });
 
 io.on('connection', (socket) => {
-  socket.on('message', (data) => handleMessage(socket, data));
+  console.log('new connection');
+  socket.on('JOIN_ROOM_REQUEST', (room, token) => handleJoinRoomRequest(room, socket));
 });
 
-const handleMessage = async (socket: Socket, data: ChatMessage) => {
-  const { room, message, token } = data;
-  const ok = verifyToken(token);
-  const tokenData = await decodeToken(token);
-  if (!ok) return socket.emit(emits.INVALID_TOKEN);
+const handleJoinRoomRequest = async (room: string, socket: MySocket) => {
+  console.log(socket.id);
+  let oldRoom = false;
+  const previousChatroom = await getChatroom(room);
+  if (previousChatroom) oldRoom = true;
+  else await createChatroom(room);
 
-  console.log(`${tokenData!.username} says: "${message}" in room: "${room}"`);
+  console.log(`${socket.data.username} joined room ${room}, old room: ${oldRoom}`);
+  socket.emit('JOINED_ROOM', { old: oldRoom });
 };
 
 export default io;

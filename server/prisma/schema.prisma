@@ -7,14 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id       Int    @id @default(autoincrement())
   username String @db.VarChar(20) @unique 
   password String @db.VarChar(100)
 }
 
-model chatroom {
+model Chatroom {
   id       Int      @id @default(autoincrement())
   name     String   @db.VarChar(20) @unique 
-  users    String[] 
+}
+
+model UserChatroom {
+  id   Int     @id @default(autoincrement())
+  userId Int
+  chatroomId Int
+  user User @relation(fields: [userId], references: [id])
 }

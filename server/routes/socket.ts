@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from '../../types/emits';
-import { createChatroom, getChatroom } from '../db/chatroom';
+import { createChatroom, getChatroom, joinChatRoom } from '../db/chatroom';
 import { decodeToken } from '../db/token';
 
 type MySocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
@@ -28,11 +28,16 @@ io.on('connection', (socket) => {
 });
 
 const handleJoinRoomRequest = async (room: string, socket: MySocket) => {
-  console.log(socket.id);
   let oldRoom = false;
-  const previousChatroom = await getChatroom(room);
-  if (previousChatroom) oldRoom = true;
-  else await createChatroom(room);
+  const username = socket.data.username;
+  if (!username) return;
+
+  let chatroom = await getChatroom(room);
+  if (chatroom) oldRoom = true;
+  else chatroom = await createChatroom(room);
+  if (chatroom === null) return;
+
+  await joinChatRoom(chatroom.id, username);
 
   console.log(`${socket.data.username} joined room ${room}, old room: ${oldRoom}`);
   socket.emit('JOINED_ROOM', { old: oldRoom });

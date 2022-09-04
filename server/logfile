@@ -199,3 +199,7 @@
 2022-09-04 15:51:45.490 CEST [22281] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?
 2022-09-04 16:30:20.858 CEST [38133] FATAL:  lock file "postmaster.pid" already exists
 2022-09-04 16:30:20.858 CEST [38133] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-04 17:13:33.470 CEST [53280] LOG:  could not receive data from client: Connection reset by peer
+2022-09-04 17:14:44.935 CEST [53940] LOG:  could not receive data from client: Connection reset by peer
+2022-09-04 17:17:24.443 CEST [57102] FATAL:  lock file "postmaster.pid" already exists
+2022-09-04 17:17:24.443 CEST [57102] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?

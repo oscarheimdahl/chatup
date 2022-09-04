@@ -8,19 +8,22 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @db.VarChar(20) @unique 
-  password String @db.VarChar(100)
+  id           Int            @id @default(autoincrement())
+  username     String         @unique @db.VarChar(20)
+  password     String         @db.VarChar(100)
+  UserChatroom UserChatroom[]
 }
 
 model Chatroom {
-  id       Int      @id @default(autoincrement())
-  name     String   @db.VarChar(20) @unique 
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(20)
+  UserChatroom UserChatroom[]
 }
 
 model UserChatroom {
-  id   Int     @id @default(autoincrement())
-  userId Int
+  id         Int  @id @default(autoincrement())
+  userId     Int
   chatroomId Int
-  user User @relation(fields: [userId], references: [id])
+  user       User @relation(fields: [userId], references: [id])
+  chatroom       Chatroom @relation(fields: [chatroomId], references: [id])
 }

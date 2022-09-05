@@ -1,9 +1,4 @@
 #main-view {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-content: center;
-
   #main-view-content {
     width: 100%;
     max-width: 1000px;
@@ -12,5 +7,71 @@
     padding: 2rem;
     flex-direction: column;
     gap: 1rem;
+
+    .join-room-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+}
+
+#room-view {
+  #room-view-content {
+    flex-direction: column;
+    height: calc(100vh - 4rem);
+    justify-content: space-between;
+
+    .room-header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      border-bottom: 1px solid black;
+    }
+
+    .message-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      height: 100%;
+      overflow: scroll;
+      padding: 0.5rem 1rem;
+      scroll-behavior: smooth;
+
+      .message-bubble {
+        width: 100%;
+        display: flex;
+        color: white;
+
+        &.own-message {
+          justify-content: end;
+          span {
+            background-color: var(--accent-1);
+            box-shadow: rgba(0, 0, 0, 0.312) 4px 3px 1px 0px;
+          }
+        }
+
+        span {
+          background-color: var(--accent-2);
+          padding: 0.5rem 1rem;
+          // border-radius: 20px;
+          border: 1px solid black;
+          position: relative;
+          box-shadow: rgba(0, 0, 0, 0.312) -4px 3px 1px 0px;
+        }
+      }
+    }
+
+    .message-input-container {
+      display: flex;
+      gap: 0.5rem;
+      margin: 0.5rem;
+
+      input {
+        max-width: calc(100vw - 200px);
+        width: 50rem;
+      }
+    }
   }
 }

@@ -203,3 +203,17 @@
 2022-09-04 17:14:44.935 CEST [53940] LOG:  could not receive data from client: Connection reset by peer
 2022-09-04 17:17:24.443 CEST [57102] FATAL:  lock file "postmaster.pid" already exists
 2022-09-04 17:17:24.443 CEST [57102] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-05 20:26:34.325 CEST [42762] FATAL:  lock file "postmaster.pid" already exists
+2022-09-05 20:26:34.325 CEST [42762] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-05 20:33:02.828 CEST [44424] LOG:  could not receive data from client: Connection reset by peer
+2022-09-05 20:41:30.321 CEST [50099] LOG:  could not receive data from client: Connection reset by peer
+2022-09-05 20:59:55.088 CEST [61444] ERROR:  duplicate key value violates unique constraint "UserChatroom_pkey"
+2022-09-05 20:59:55.088 CEST [61444] DETAIL:  Key ("chatroomId", "userId")=(1, 1) already exists.
+2022-09-05 20:59:55.088 CEST [61444] STATEMENT:  INSERT INTO "public"."UserChatroom" ("userId","chatroomId") VALUES ($1,$2) /* traceparent=00-00-00-00 */
+2022-09-05 21:02:27.113 CEST [63817] FATAL:  lock file "postmaster.pid" already exists
+2022-09-05 21:02:27.113 CEST [63817] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-05 21:03:47.977 CEST [64486] ERROR:  duplicate key value violates unique constraint "UserChatroom_pkey"
+2022-09-05 21:03:47.977 CEST [64486] DETAIL:  Key ("chatroomId", "userId")=(3, 1) already exists.
+2022-09-05 21:03:47.977 CEST [64486] STATEMENT:  INSERT INTO "public"."UserChatroom" ("userId","chatroomId") VALUES ($1,$2) /* traceparent=00-00-00-00 */
+2022-09-05 21:33:42.549 CEST [84760] FATAL:  lock file "postmaster.pid" already exists
+2022-09-05 21:33:42.549 CEST [84760] HINT:  Is another postmaster (PID 3042) running in data directory "/Users/oscar.heimdahl/.postgres"?

@@ -3,7 +3,7 @@ import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketDa
 import { createChatroom, getChatroom, joinChatRoom } from '../db/chatroom';
 import { decodeToken } from '../db/token';
 
-type MySocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
+type ChatSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>();
 
 io.use(async (socket, next) => {
@@ -25,9 +25,15 @@ io.use(async (socket, next) => {
 io.on('connection', (socket) => {
   console.log('new connection');
   socket.on('JOIN_ROOM_REQUEST', (room, token) => handleJoinRoomRequest(room, socket));
+  socket.on('CHAT_MESSAGE', (message, token) => handleChatMessage(message, socket));
 });
 
-const handleJoinRoomRequest = async (room: string, socket: MySocket) => {
+const handleChatMessage = (message: string, socket: ChatSocket) => {
+  console.log('chatmessage recieved');
+  socket.broadcast.emit('CHAT_MESSAGE', message, socket.data.username ?? 'unkown');
+};
+
+const handleJoinRoomRequest = async (room: string, socket: ChatSocket) => {
   let oldRoom = false;
   const username = socket.data.username;
   if (!username) return;
@@ -40,7 +46,7 @@ const handleJoinRoomRequest = async (room: string, socket: MySocket) => {
   await joinChatRoom(chatroom.id, username);
 
   console.log(`${socket.data.username} joined room ${room}, old room: ${oldRoom}`);
-  socket.emit('JOINED_ROOM', { old: oldRoom });
+  socket.emit('JOINED_ROOM', { old: oldRoom, room });
 };
 
 export default io;

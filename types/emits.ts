@@ -7,12 +7,13 @@
 
 export interface ServerToClientEvents {
   INVALID_TOKEN: () => void;
-  NEW_MESSAGE: () => void;
-  JOINED_ROOM: ({ old }: { old: boolean }) => void;
+  CHAT_MESSAGE: (message: string, sender: string) => void;
+  JOINED_ROOM: ({ old, room }: { old: boolean; room: string }) => void;
 }
 
 export interface ClientToServerEvents {
   JOIN_ROOM_REQUEST: (room: string, token: string) => void;
+  CHAT_MESSAGE: (message: string, token: string) => void;
 }
 
 export interface InterServerEvents {

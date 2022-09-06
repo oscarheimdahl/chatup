@@ -106,7 +106,8 @@ const Messages = () => {
       {messages.map((message, i) => {
         return (
           <div key={'message' + i} className={`message-bubble ${message.sender === username ? 'own-message' : ''}`}>
-            <span>{message.text}</span>
+            <div>{message.text}</div>
+            <span>{message.sender}</span>
           </div>
         );
       })}

@@ -1,0 +1,18 @@
+#construction-banner {
+  $width: 300rem;
+  $height: 3rem;
+  $dist: 100px;
+  position: absolute;
+  width: $width;
+  height: $height;
+  background-color: var(--accent-3);
+  left: calc($dist - $width / 2);
+  top: calc($dist - $height / 2);
+  border: solid 1px black;
+  transform-origin: center center;
+  transform: rotate(-45deg);
+  display: grid;
+  place-content: center;
+
+  animation: blink 0.5s 5 linear;
+}

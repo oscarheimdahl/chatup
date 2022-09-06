@@ -10,8 +10,9 @@ userRoutes.get('/loggedin', authMiddleware, async (req, res) => {
   console.log('User logged in');
   res.status(200).end();
 });
-
+console.log('1');
 userRoutes.post('/login', async (req, res) => {
+  console.log('here');
   const { username, password } = req.body;
   const errMessage = validateCredentials(username, password);
 

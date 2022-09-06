@@ -13,8 +13,8 @@ const origin = '*';
 app.use(cors({ origin }));
 app.use(express.json());
 
-// app.use('/users', userRoutes);
-// app.use('/rooms', roomRoutes);
+app.use('/users', userRoutes);
+app.use('/rooms', roomRoutes);
 
 app.use('/', express.static(path.resolve(__dirname, '..', 'client', 'dist')));
 

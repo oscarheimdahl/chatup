@@ -3,17 +3,15 @@ import { host } from '@src/config/vars';
 import axios, { AxiosError } from 'axios';
 import { UserInitialState } from '../types';
 
-export const loggedIn = createAsyncThunk('users/loggedIn', async (token: string): Promise<string> => {
-  await axios.get(host + 'users/loggedin', { headers: { Authorization: `Bearer ${token}` } });
-  return token;
+export const loggedIn = createAsyncThunk('users/loggedIn', async (token: string) => {
+  const res = await axios.get(host + 'users/loggedin', { headers: { Authorization: `Bearer ${token}` } });
+  const username = res.data;
+  return { token, username };
 });
 
 export const login = createAsyncThunk(
   'users/login',
-  async (
-    user: { username: string; password: string },
-    { rejectWithValue }
-  ): Promise<{ token: string; username: string } | ReturnType<typeof rejectWithValue>> => {
+  async (user: { username: string; password: string }, { rejectWithValue }) => {
     try {
       const res = await axios.post(host + 'users/login', {
         username: user.username,
@@ -88,7 +86,8 @@ export const userSlice = createSlice({
       switch (action.payload) {
         case 403:
           state.loginError.forbidden = true;
-        case 500:
+          break;
+        default:
           state.loginError.serverUnreachable = true;
       }
     });
@@ -99,13 +98,15 @@ export const userSlice = createSlice({
       switch (action.payload) {
         case 409:
           state.registerInfo.usernameTaken = true;
-        case 500:
-        // state.login.serverUnreachable = true;
+          break;
+        default:
+          state.loginError.serverUnreachable = true;
       }
     });
     builder.addCase(loggedIn.fulfilled, (state, action) => {
       state.loggedIn = true;
-      state.token = action.payload;
+      state.username = action.payload.username;
+      state.token = action.payload.token;
     });
     builder.addCase(loggedIn.rejected, (state, action) => {
       state.loggedIn = false;

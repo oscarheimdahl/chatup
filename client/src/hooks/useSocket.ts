@@ -10,7 +10,7 @@ const useSocket = () => {
   const token = useAppSelector((s) => s.user.token);
 
   useEffect(() => {
-    const ioSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(host, {
+    const ioSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(host as string, {
       auth: { token },
       autoConnect: true,
     });

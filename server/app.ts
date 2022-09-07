@@ -7,7 +7,7 @@ import io from './routes/socket';
 import userRoutes from './routes/user';
 
 const app = express();
-const origin = '*';
+const origin = 'http://localhost:8080';
 
 app.use(cors({ origin }));
 app.use(express.json());

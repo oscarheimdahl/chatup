@@ -8,7 +8,7 @@ const userRoutes = express.Router();
 
 userRoutes.get('/loggedin', authMiddleware, async (req, res) => {
   console.log('User logged in');
-  res.status(200).end();
+  res.status(200).send(res.locals.username);
 });
 
 userRoutes.post('/login', async (req, res) => {

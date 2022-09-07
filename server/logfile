@@ -249,3 +249,27 @@
 2022-09-07 13:45:05.749 CEST [40096] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
 2022-09-07 13:46:23.019 CEST [40519] FATAL:  lock file "postmaster.pid" already exists
 2022-09-07 13:46:23.019 CEST [40519] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 13:57:53.169 CEST [44346] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 13:57:53.169 CEST [44346] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 14:00:26.140 CEST [45365] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 14:00:26.140 CEST [45365] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 14:03:56.667 CEST [45985] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 14:03:56.667 CEST [45985] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 14:05:14.872 CEST [46561] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 14:05:14.872 CEST [46561] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 14:05:27.635 CEST [46639] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 14:05:27.635 CEST [46639] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 14:11:17.412 CEST [50610] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 14:11:17.412 CEST [50610] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 14:11:31.640 CEST [50892] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 14:11:31.640 CEST [50892] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 14:39:49.078 CEST [64604] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 14:39:49.078 CEST [64604] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 15:18:52.515 CEST [84537] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 15:18:52.515 CEST [84537] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 16:56:59.225 CEST [17529] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 16:56:59.225 CEST [17529] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 17:07:09.931 CEST [23630] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 17:07:09.931 CEST [23630] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?
+2022-09-07 17:10:52.728 CEST [26163] FATAL:  lock file "postmaster.pid" already exists
+2022-09-07 17:10:52.728 CEST [26163] HINT:  Is another postmaster (PID 15483) running in data directory "/Users/oscar.heimdahl/.postgres"?

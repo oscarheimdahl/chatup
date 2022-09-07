@@ -48,8 +48,8 @@ const LoginForm = ({
   showRegister: () => void;
   className: string;
 }) => {
-  const [username, setUsername] = useState('oscar');
-  const [password, setPassword] = useState('heimdahl');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [missingFields, setMissingFields] = useState(false);
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
@@ -70,10 +70,12 @@ const LoginForm = ({
 
   let errorText = '';
   const badCredentials = useAppSelector((s) => s.user.loginError.forbidden);
+  const serverUnreachable = useAppSelector((s) => s.user.loginError.serverUnreachable);
   if (missingFields && !username) errorText = 'Please enter a username.';
   if (missingFields && !password) errorText = 'Please enter a password.';
   if (missingFields && !password && !username) errorText = 'Please enter a username and password.';
   if (badCredentials) errorText = 'Wrong username or password.';
+  if (serverUnreachable) errorText = 'Server error';
 
   return (
     <form

@@ -24,12 +24,15 @@ export const verifyToken = (token: string) => {
   return true;
 };
 
-export const decodeToken = async (token: string): Promise<jwt.JwtPayload | undefined> => {
+interface MyJwtPayload extends jwt.JwtPayload {
+  username: string;
+}
+export const decodeToken = async (token: string): Promise<MyJwtPayload | undefined> => {
   if (!token) return;
 
   try {
     const decodedToken = jwt.decode(token);
-    return decodedToken as jwt.JwtPayload;
+    return decodedToken as MyJwtPayload;
   } catch (e) {
     return;
   }

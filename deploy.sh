@@ -27,7 +27,7 @@ git fetch
    echo
    /usr/bin/killall screen
    /usr/bin/git pull
-   /usr/bin/screen -d -m /usr/bin/bash -c "sleep 4; cd ~/Desktop/chatup && /usr/bin/git pull && /usr/local/bin/yarn deploy; sleep 4"
+   /usr/bin/screen -d -m /usr/bin/bash -c "sleep 4; cd /home/oheim/Desktop/chatup && /usr/bin/git pull && /usr/local/bin/yarn deploy; sleep 4"
    /usr/bin/echo "running" > /home/oheim/Desktop/run.txt
    exit 0
  else

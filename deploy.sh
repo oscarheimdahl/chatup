@@ -9,7 +9,7 @@
  echo
  echo -e ${ACTION}Checking Git repo
  echo -e =======================${NOCOLOR}
- BRANCH=$(git rev-parse --abbrev-ref HEAD)
+ BRANCH=$(/usr/bin/git rev-parse --abbrev-ref HEAD)
  if [ "$BRANCH" != "main" ]
  then
    echo -e ${ERROR}Not on main. Aborting. ${NOCOLOR}
@@ -18,8 +18,8 @@
  fi
 
 git fetch
- HEADHASH=$(git rev-parse HEAD)
- UPSTREAMHASH=$(git rev-parse main@{upstream})
+ HEADHASH=$(/usr/bin/git rev-parse HEAD)
+ UPSTREAMHASH=$(/usr/bin/git rev-parse main@{upstream})
 
  if [ "$HEADHASH" != "$UPSTREAMHASH" ]
  then

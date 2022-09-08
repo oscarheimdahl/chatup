@@ -22,9 +22,10 @@ git fetch
 
  if [ "$HEADHASH" != "$UPSTREAMHASH" ]
  then
-   echo -e ${ERROR}Not up to date with origin. Aborting.${NOCOLOR}
+   echo -e ${ERROR}Not up to date with origin.${NOCOLOR}
    echo
    lsof -t -i tcp:3000 | xargs kill
+   git pull
    yarn deploy
    exit 0
  else

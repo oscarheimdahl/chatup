@@ -26,7 +26,7 @@ git fetch
    echo -e ${ERROR}Not up to date with origin.${NOCOLOR}
    echo
    /usr/bin/killall screen
-   /usr/bin/screen -d -m /usr/bin/bash -c "cd /home/oheim/Desktop/chatup && /usr/bin/git pull && /usr/local/bin/yarn deploy"
+   /usr/bin/screen -d -m /usr/bin/bash -c "cd /home/oheim/Desktop/chatup && /usr/bin/git pull && /usr/local/bin/yarn migrate-prod && /usr/local/bin/yarn deploy"
    /usr/bin/echo "Deployed at $(/usr/bin/date)" >> /home/oheim/Desktop/log.txt
    exit 0
  else

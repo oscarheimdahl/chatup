@@ -8,7 +8,6 @@ const roomRoutes = express.Router();
 roomRoutes.use(authMiddleware);
 
 roomRoutes.get('/:name/messages', async (req, res) => {
-  console.log(req.headers);
   const chatroomName = req.params.name;
   if (!chatroomName) {
     res.status(404).send('Chatroom name missing');

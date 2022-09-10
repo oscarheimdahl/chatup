@@ -2,12 +2,12 @@ import * as express from 'express';
 import { compareHash } from '../db/hash';
 import { generateNewToken } from '../db/token';
 import { createUser, getUser } from '../db/user';
+import { log } from '../logging/log';
 import { authMiddleware } from '../middleware/auth';
 
 const userRoutes = express.Router();
 
 userRoutes.get('/loggedin', authMiddleware, async (req, res) => {
-  console.log('User logged in');
   res.status(200).send(res.locals.username);
 });
 
@@ -36,7 +36,7 @@ userRoutes.post('/login', async (req, res) => {
   } catch (e) {
     return res.status(500);
   }
-
+  log(`${username} logged in!`);
   return res.status(200).send(token);
 });
 
@@ -57,6 +57,7 @@ userRoutes.post('/register', async (req, res) => {
     return res.status(500).end();
   }
 
+  log(`${username} registered!`);
   return res.status(201).end();
 });
 

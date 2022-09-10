@@ -1,17 +1,14 @@
 // import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 // import { host } from '@src/config/vars';
 // import { io, Socket } from 'socket.io-client';
+// import { SocketInitialState } from '../types';
 
-// export const connectSocket = createAsyncThunk('connect socket', async (token: string) => {
-//   const socket = io(host, { auth: { token } });
-//   return socket;
-// });
+// // export const connectSocket = createAsyncThunk('connect socket', async (token: string) => {
+// //   const socket = io(host, { auth: { token } });
+// //   return socket;
+// // });
 
-// interface SocketState {
-//   socket: Socket | null;
-// }
-
-// const initialState: SocketState = {
+// const initialState: SocketInitialState = {
 //   socket: null,
 // };
 
@@ -19,10 +16,8 @@
 //   name: 'user',
 //   initialState: initialState,
 //   reducers: {
-//     connectSocket: (state, action: PayloadAction<{ socket: Socket; token: string }>) => {
-//       const socket = io(host, { auth: { token: action.payload } });
-//       if (!socket) return;
-//       state.socket = action.payload.socket;
+//     setSocket: (state, action: PayloadAction<typeof initialState.socket>) => {
+//       console.log(action.payload);
 //     },
 //   },
 //   extraReducers: (builder) => {
@@ -33,7 +28,7 @@
 // });
 
 // // Action creators are generated for each case reducer function
-// export const {} = socketSlice.actions;
+// export const { setSocket } = socketSlice.actions;
 
 // const socketReducer = socketSlice.reducer;
 

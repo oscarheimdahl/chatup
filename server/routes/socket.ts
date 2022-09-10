@@ -1,8 +1,13 @@
 import { Server, Socket } from 'socket.io';
+import { ChatMessage } from '../../types';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from '../../types/emits';
 import { createChatroom, getChatroom, joinChatRoom } from '../db/chatroom';
+import { createChatMessage } from '../db/message';
 import { decodeToken } from '../db/token';
+import { log, logMessage, logDisconnect } from '../logging/log';
 
+export const connectedUsers = new Map<string, boolean>();
+export const USERNAME_MISSING = 'username_missing';
 type ChatSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>();
 
@@ -23,30 +28,44 @@ io.use(async (socket, next) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('new connection');
+  const username = socket.data.username ?? USERNAME_MISSING;
+  if (connectedUsers.get(username)) return socket.disconnect();
+  connectedUsers.set(username, true);
+  log(`${username} connected! SocketID ${socket.id}`);
+
   socket.on('JOIN_ROOM_REQUEST', (room, token) => handleJoinRoomRequest(room, socket));
-  socket.on('CHAT_MESSAGE', (message, token) => handleChatMessage(message, socket));
+  socket.on('CHAT_MESSAGE', (chatMessage, token) => handleChatMessage(chatMessage, socket));
+  socket.on('disconnect', () => onSocketDisconnect(username));
 });
 
-const handleChatMessage = (message: string, socket: ChatSocket) => {
-  console.log('chatmessage recieved');
-  socket.broadcast.emit('CHAT_MESSAGE', message, socket.data.username ?? 'unkown');
+const onSocketDisconnect = (username: string) => {
+  connectedUsers.set(username, false);
+  logDisconnect(username);
+};
+
+const handleChatMessage = (chatMessage: ChatMessage, socket: ChatSocket) => {
+  socket.to(chatMessage.room).emit('CHAT_MESSAGE', chatMessage);
+
+  logMessage(chatMessage);
+
+  createChatMessage(chatMessage);
 };
 
 const handleJoinRoomRequest = async (room: string, socket: ChatSocket) => {
-  let oldRoom = false;
+  let preExisting = false;
   const username = socket.data.username;
   if (!username) return;
 
   let chatroom = await getChatroom(room);
-  if (chatroom) oldRoom = true;
+  if (chatroom) preExisting = true;
   else chatroom = await createChatroom(room);
   if (chatroom === null) return;
 
   await joinChatRoom(chatroom.id, username);
 
-  console.log(`${socket.data.username} joined room ${room}, old room: ${oldRoom}`);
-  socket.emit('JOINED_ROOM', { old: oldRoom, room });
+  socket.emit('JOINED_ROOM', { room, preExisting });
+  log(`${socket.data.username} joined room ${room}`);
+  socket.join(room);
 };
 
 export default io;

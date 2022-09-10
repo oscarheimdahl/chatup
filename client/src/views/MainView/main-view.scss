@@ -28,6 +28,19 @@
       justify-content: center;
       padding: 1rem;
       border-bottom: 1px solid black;
+      position: relative;
+
+      .back-button {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        display: grid;
+        place-content: center;
+        transform: translateY(-50%);
+        background-color: transparent;
+        border: none;
+        padding: 1rem;
+      }
     }
 
     .message-container {
@@ -37,7 +50,7 @@
       height: 100%;
       overflow: scroll;
       padding: 0.5rem 1rem;
-      scroll-behavior: smooth;
+      // scroll-behavior: smooth;
 
       .message-bubble {
         width: 100%;
@@ -46,19 +59,23 @@
 
         &.own-message {
           justify-content: end;
-          span {
+          .message {
             background-color: var(--accent-1);
             box-shadow: rgba(0, 0, 0, 0.312) 4px 3px 1px 0px;
           }
         }
 
-        span {
+        .message {
           background-color: var(--accent-2);
           padding: 0.5rem 1rem;
           // border-radius: 20px;
           border: 1px solid black;
           position: relative;
           box-shadow: rgba(0, 0, 0, 0.312) -4px 3px 1px 0px;
+        }
+
+        .sender {
+          color: lightgray;
         }
       }
     }

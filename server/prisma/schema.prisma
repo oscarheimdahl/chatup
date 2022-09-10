@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  username     String         @unique @db.VarChar(20)
-  password     String         @db.VarChar(100)
-  chatrooms UserChatroom[]
+  id          Int            @id @default(autoincrement())
+  username    String         @unique @db.VarChar(20)
+  password    String         @db.VarChar(100)
+  chatrooms   UserChatroom[]
+  ChatMessage ChatMessage[]
 }
 
 model Chatroom {
-  id   Int            @id @default(autoincrement())
-  name String         @unique @db.VarChar(20)
-  users UserChatroom[]
+  id          Int            @id @default(autoincrement())
+  name        String         @unique @db.VarChar(20)
+  users       UserChatroom[]
+  ChatMessage ChatMessage[]
 }
 
 model UserChatroom {
@@ -26,5 +28,16 @@ model UserChatroom {
   chatroomId Int
   user       User     @relation(fields: [userId], references: [id])
   chatroom   Chatroom @relation(fields: [chatroomId], references: [id])
+
   @@id([chatroomId, userId])
+}
+
+model ChatMessage {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  chatroomId Int
+  chatroom   Chatroom @relation(fields: [chatroomId], references: [id])
+  message    String
+  sentDate   DateTime
 }

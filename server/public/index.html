@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404</title>
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        display: grid;
+        place-content: center;
+        height: 100%;
+        background-image: linear-gradient(hsl(240, 42%, 30%), hsl(240, 42%, 20%));
+        font-size: 2rem;
+        font-family: sans-serif;
+        color: white;
+        transform: rotate(0) scale(1);
+      }
+
+      #number {
+        animation: spin 100s infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0) scale(1);
+        }
+        100% {
+          transform: rotate(10000deg) scale(10);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="number">404</div>
+  </body>
+</html>

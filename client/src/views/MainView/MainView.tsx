@@ -2,34 +2,43 @@ import useSocket from '@src/hooks/useSocket';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useEffect, useRef, useState } from 'react';
 
-import './main-view.scss';
-import Input from '@src/components/Input/Input';
+import KeyboardArrowLeftSharpIcon from '@mui/icons-material/KeyboardArrowLeftSharp';
 import Button from '@src/components/Button/Button';
+import Input from '@src/components/Input/Input';
+import { host } from '@src/config/vars';
+import { setRoom } from '@src/store/slices/userSlice';
+import axios from 'axios';
+import { ChatMessage } from '../../../../types';
+import './main-view.scss';
 
 const MainView = () => {
-  const [room, setRoom] = useState('');
-  const [inRoom, setInRoom] = useState(false);
+  const [roomName, setRoomName] = useState('');
+  const room = useAppSelector((s) => s.user.room);
 
   const socket = useSocket();
   const token = useAppSelector((s) => s.user.token);
   const dispatch = useAppDispatch();
 
   const handleRoomInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRoom(e.target.value);
+    setRoomName(e.target.value);
   };
 
   const joinRoom = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('join room:', socket);
+    if (!socket) return;
     e.preventDefault();
-    console.log('joining room...');
-    socket.emit('JOIN_ROOM_REQUEST', room, token);
+    // console.log('joining room...');
+    console.log('room:', roomName);
+    socket.emit('JOIN_ROOM_REQUEST', roomName, token);
 
-    socket.once('JOINED_ROOM', ({ old, room }) => {
-      console.log(`joined room, ${room}. Old room: ${old}`);
-      setInRoom(true);
+    socket.once('JOINED_ROOM', ({ room, preExisting }) => {
+      console.log(`joined room, ${room}. Old room: ${preExisting}`);
+      setRoomName(room);
+      dispatch(setRoom(room));
     });
   };
 
-  if (inRoom) return <Room room={room} />;
+  if (room) return <Room />;
 
   return (
     <div id='main-view' className='full-screen'>
@@ -40,7 +49,7 @@ const MainView = () => {
             label='Join a chat room'
             name='room-name'
             onChange={handleRoomInput}
-            value={room}
+            value={roomName}
           />
           <Button type='submit'>Join</Button>
         </form>
@@ -49,29 +58,68 @@ const MainView = () => {
   );
 };
 
-interface RoomProps {
-  room: string;
-}
+interface RoomProps {}
 
-const Room = ({ room }: RoomProps) => {
+const Room = ({}: RoomProps) => {
   const socket = useSocket();
   const [message, setMessage] = useState('');
+  const room = useAppSelector((s) => s.user.room);
   const token = useAppSelector((s) => s.user.token);
+  const username = useAppSelector((s) => s.user.username);
+  const dispatch = useAppDispatch();
+  const [newMessages, setNewMessages] = useState<ChatMessage[]>([]);
+  const messageContainer = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (messageContainer.current) {
+        messageContainer.current.style.scrollBehavior = '';
+        scrollToBottom();
+      }
+    }, 20);
+  }, [messageContainer]);
+
+  useEffect(() => {
+    socket.on('CHAT_MESSAGE', (chatMessage) => {
+      updateNewMessages(chatMessage);
+    });
+  }, [socket]);
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message) return;
-    socket.emit('CHAT_MESSAGE', message, token);
+    const chatMessage: ChatMessage = { message, room, username, sentDate: new Date() };
+    socket.emit('CHAT_MESSAGE', chatMessage, token);
+    updateNewMessages(chatMessage);
     setMessage('');
+  };
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      messageContainer.current?.scrollTo(0, messageContainer?.current.scrollHeight);
+      if (messageContainer.current) messageContainer.current.style.scrollBehavior = 'smooth';
+    }, 50);
+  };
+
+  const updateNewMessages = (chatMessage: ChatMessage) => {
+    setNewMessages((previousMessages) => [...previousMessages, chatMessage]);
+    scrollToBottom();
+  };
+
+  const handleBack = () => {
+    dispatch(setRoom(''));
   };
 
   return (
     <div id='room-view' className='full-screen'>
       <div id='room-view-content' className='floating-window'>
         <div className='room-header'>
+          <button onClick={handleBack} className='back-button'>
+            <KeyboardArrowLeftSharpIcon className='indicator' />
+          </button>
           <h1>{room}</h1>
         </div>
-        <Messages />
+        <Messages newMessages={newMessages} messageContainer={messageContainer} room={room} />
         <form spellCheck='false' autoComplete='off' className='join-room-form' onSubmit={(e) => sendMessage(e)}>
           <section className='message-input-container'>
             <Input name='message-input' value={message} onChange={(e) => setMessage(e.target.value)} />
@@ -83,30 +131,43 @@ const Room = ({ room }: RoomProps) => {
   );
 };
 
-interface Message {
-  text: string;
-  sender: string;
+interface MessagesProps {
+  room: string;
+  newMessages: ChatMessage[];
+  messageContainer: React.RefObject<HTMLDivElement>;
 }
 
-const Messages = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const socket = useSocket();
+const Messages = ({ room, newMessages, messageContainer }: MessagesProps) => {
+  const [oldMessages, setOldMessages] = useState<ChatMessage[]>([]);
+
   const username = useAppSelector((s) => s.user.username);
-  const latestMessageRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (!socket) return;
-    socket.on('CHAT_MESSAGE', (message, sender) => {
-      setMessages((previousMessages) => [...previousMessages, { text: message, sender }]);
-      setTimeout(() => latestMessageRef.current?.scrollTo(0, latestMessageRef?.current.scrollHeight), 200);
-    });
-  }, [socket]);
+    const getMessages = async () => {
+      const messages = await axios.get(host + `chatroom/${room}/messages`);
+      setOldMessages(messages.data);
+    };
+    getMessages();
+  }, []);
 
   return (
-    <section ref={latestMessageRef} className='message-container'>
-      {messages.map((message, i) => {
+    <section ref={messageContainer} className='message-container'>
+      {oldMessages.map((message, i) => {
         return (
-          <div key={'message' + i} className={`message-bubble ${message.sender === username ? 'own-message' : ''}`}>
-            <span>{message.text}</span>
+          <div
+            key={'old-message' + i}
+            className={`message-bubble ${message.username === username ? 'own-message' : ''}`}
+          >
+            <span className='message'>{message.message}</span>
+            <span className='sender'>{message.username}</span>
+          </div>
+        );
+      })}
+      {newMessages.map((message, i) => {
+        return (
+          <div key={'message' + i} className={`message-bubble ${message.username === username ? 'own-message' : ''}`}>
+            <span className='message'>{message.message}</span>
+            <span className='sender'>{message.username}</span>
           </div>
         );
       })}

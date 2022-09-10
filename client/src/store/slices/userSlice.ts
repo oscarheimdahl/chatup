@@ -3,17 +3,17 @@ import { host } from '@src/config/vars';
 import axios, { AxiosError } from 'axios';
 import { UserInitialState } from '../types';
 
-export const loggedIn = createAsyncThunk('users/loggedIn', async (token: string) => {
-  const res = await axios.get(host + 'users/loggedin', { headers: { Authorization: `Bearer ${token}` } });
+export const loggedIn = createAsyncThunk('user/loggedIn', async (token: string) => {
+  const res = await axios.get(host + 'user/loggedin', { headers: { Authorization: `Bearer ${token}` } });
   const username = res.data;
   return { token, username };
 });
 
 export const login = createAsyncThunk(
-  'users/login',
+  'user/login',
   async (user: { username: string; password: string }, { rejectWithValue }) => {
     try {
-      const res = await axios.post(host + 'users/login', {
+      const res = await axios.post(host + 'user/login', {
         username: user.username,
         password: user.password,
       });
@@ -27,10 +27,10 @@ export const login = createAsyncThunk(
 );
 
 export const register = createAsyncThunk(
-  'users/register',
+  'user/register',
   async (user: { username: string; password: string }, { rejectWithValue }) => {
     try {
-      await axios.post(host + 'users/register', {
+      await axios.post(host + 'user/register', {
         username: user.username,
         password: user.password,
       });
@@ -44,6 +44,7 @@ export const register = createAsyncThunk(
 const initialState: UserInitialState = {
   loggedIn: null,
   token: '',
+  room: '',
   username: '',
   loginError: {
     forbidden: false,
@@ -73,6 +74,9 @@ export const userSlice = createSlice({
       state.loggedIn = false;
       state.token = '';
       window.localStorage.removeItem('token');
+    },
+    setRoom: (state, action) => {
+      state.room = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -115,7 +119,7 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { resetLoginError, resetRegisterError, logout } = userSlice.actions;
+export const { resetLoginError, resetRegisterError, logout, setRoom } = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 

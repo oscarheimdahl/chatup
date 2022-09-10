@@ -1,24 +1,21 @@
 import { ClientToServerEvents, ServerToClientEvents } from '@src/../../types/emits';
 import { host } from '@src/config/vars';
-import { useAppSelector } from '@src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(host as string);
 const useSocket = () => {
   // @ts-ignore
-  const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents>>(null);
+  const [socketConnected, setSocketConnected] = useState(false);
   const token = useAppSelector((s) => s.user.token);
-
+  // TODO THIS DOESNT WORK
   useEffect(() => {
-    const ioSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(host as string, {
-      auth: { token },
-      autoConnect: true,
-    });
-    ioSocket.connect();
-    setSocket(ioSocket);
-    ioSocket.on('INVALID_TOKEN', () => console.log('bad token'));
-  }, []);
-
+    if (socketConnected) return;
+    socket.auth = { token };
+    socket.connect();
+    setSocketConnected(true);
+  }, [socketConnected]);
   return socket;
 };
 

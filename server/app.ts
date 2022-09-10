@@ -12,14 +12,14 @@ const origin = 'http://localhost:8080';
 app.use(cors({ origin }));
 app.use(express.json());
 
-app.use('/users', userRoutes);
-app.use('/rooms', roomRoutes);
+app.use('/user', userRoutes);
+app.use('/chatroom', roomRoutes);
 
 app.use('/', express.static(path.resolve(__dirname, '..', 'client', 'dist')));
 
-// app.get('*', (req, res) => {
-//   res.status(404).send('what???');
-// });
+app.get('*', (req, res) => {
+  res.status(404).sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 
 const server = app.listen(3000, () => {
   console.log('http://localhost:3000');

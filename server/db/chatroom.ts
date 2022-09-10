@@ -1,8 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { hash } from './hash';
+import { prisma } from './init';
 import { getUser } from './user';
-
-const prisma = new PrismaClient();
 
 export const createChatroom = async (name: string) => {
   return await prisma.chatroom.create({

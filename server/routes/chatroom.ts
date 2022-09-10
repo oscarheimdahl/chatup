@@ -1,36 +1,34 @@
 import * as express from 'express';
-import { createChatroom } from '../db/chatroom';
+import { createChatroom, getChatroom } from '../db/chatroom';
+import { getMessages } from '../db/message';
 import { authMiddleware } from '../middleware/auth';
 
 const roomRoutes = express.Router();
 
 roomRoutes.use(authMiddleware);
 
-roomRoutes.get('/', async (req, res) => {});
-
-roomRoutes.post('/join', async (req, res) => {
-  const { name } = req.body;
-  const errMessage = validateName(name);
-
-  if (errMessage) {
-    return res.status(400).send(errMessage);
+roomRoutes.get('/:name/messages', async (req, res) => {
+  console.log(req.headers);
+  const chatroomName = req.params.name;
+  if (!chatroomName) {
+    res.status(404).send('Chatroom name missing');
   }
-
+  const chatroom = await getChatroom(chatroomName);
+  if (!chatroom) {
+    res.status(404).send('No chatroom with that name');
+  }
+  const chatroomId = chatroom?.id;
+  if (!chatroomId) {
+    res.status(500).send('Unable to get messages');
+    return;
+  }
   try {
-    const oldChatroomErr = await createChatroom(name);
-    if (oldChatroomErr) {
-      return res.status(409).send(oldChatroomErr);
-    }
+    const messages = await getMessages(chatroom.id);
+    res.send(messages).status(200);
   } catch (e) {
-    return res.status(500).end();
+    res.status(500).send('Unable to get messages');
+    return;
   }
-
-  return res.status(201).end();
 });
-
-const validateName = (name: string) => {
-  if (!name) return 'Name missing!';
-  if (name.length < 4) return 'Name must be longer than 4';
-};
 
 export default roomRoutes;

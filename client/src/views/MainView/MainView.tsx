@@ -6,10 +6,12 @@ import Button from '@src/components/Button/Button';
 import Input from '@src/components/Input/Input';
 import { useNavigate } from 'react-router-dom';
 
+import { useAdmin } from '@src/hooks/useCanDownload';
 import { setRoom } from '@src/store/slices/userSlice';
 import './main-view.scss';
 
 const MainView = () => {
+  useAdmin();
   const navigate = useNavigate();
 
   const [roomName, setRoomName] = useState('');

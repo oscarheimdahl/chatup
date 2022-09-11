@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "concurrently \"cd client && yarn dev\" \"cd server && yarn dev-db\" \"cd server && yarn dev\"",
     "migrate-prod": "cd server && yarn prisma migrate deploy",
-    "deploy": "cd client && yarn build && ts-node ../server/app.ts"
+    "deploy": "cd client && yarn build && cd ../server && ts-node app.ts"
   },
   "devDependencies": {
     "concurrently": "^7.3.0"

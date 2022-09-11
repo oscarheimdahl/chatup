@@ -1,6 +1,12 @@
+import * as path from 'path';
 import * as fs from 'fs';
 import { ChatMessage } from '../../types';
 import { connectedUsers } from '../routes/socket';
+
+const logLocation = path.resolve('.', 'logging', 'logs.log');
+fs.writeFile(logLocation, '', { flag: 'a+' }, (err) => {
+  if (err) console.log(err);
+});
 
 let logDisconnectTimeout: NodeJS.Timeout;
 export const logDisconnect = (username: string) => {
@@ -26,7 +32,7 @@ export const logChatMessage = (chatMessage: ChatMessage) => {
 };
 
 const logToFile = (log: string) => {
-  fs.appendFile('logging/test.log', log + '\n', (err) => {
+  fs.appendFile(logLocation, log + '\n', (err) => {
     if (err) console.error(err);
   });
 };

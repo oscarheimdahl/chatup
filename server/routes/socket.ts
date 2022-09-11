@@ -4,7 +4,7 @@ import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketDa
 import { createChatroom, getChatroom, joinChatRoom } from '../db/chatroom';
 import { createChatMessage } from '../db/message';
 import { decodeToken } from '../db/token';
-import { log, logMessage, logDisconnect } from '../logging/log';
+import { log, logChatMessage, logDisconnect } from '../logging/log';
 
 export const connectedUsers = new Map<string, boolean>();
 export const USERNAME_MISSING = 'username_missing';
@@ -46,7 +46,7 @@ const onSocketDisconnect = (username: string) => {
 const handleChatMessage = (chatMessage: ChatMessage, socket: ChatSocket) => {
   socket.to(chatMessage.room).emit('CHAT_MESSAGE', chatMessage);
 
-  logMessage(chatMessage);
+  logChatMessage(chatMessage);
 
   createChatMessage(chatMessage);
 };

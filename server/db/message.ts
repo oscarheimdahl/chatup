@@ -32,6 +32,7 @@ export const getMessages = async (chatroomId: number): Promise<ChatMessage[]> =>
       user: {
         select: {
           username: true,
+          color: true,
         },
       },
       chatroom: {
@@ -46,6 +47,7 @@ export const getMessages = async (chatroomId: number): Promise<ChatMessage[]> =>
 
   const chatMessages: ChatMessage[] = messages.map((message): ChatMessage => {
     return {
+      color: message.user.color,
       username: message.user.username,
       message: message.message,
       room: message.chatroom.name,

@@ -1,14 +1,16 @@
 import * as express from 'express';
 import { compareHash } from '../db/hash';
 import { generateNewToken } from '../db/token';
-import { createUser, getUser } from '../db/user';
+import { createUser, getUser, setColor } from '../db/user';
 import { log } from '../logging/log';
 import { authMiddleware } from '../middleware/auth';
 
 const userRoutes = express.Router();
 
 userRoutes.get('/loggedin', authMiddleware, async (req, res) => {
-  res.status(200).send(res.locals.username);
+  const user = await getUser(res.locals.username);
+  if (!user) return res.status(500);
+  res.status(200).send({ username: user.username, color: user.color });
 });
 
 userRoutes.post('/login', async (req, res) => {
@@ -61,6 +63,26 @@ userRoutes.post('/register', async (req, res) => {
   return res.status(201).end();
 });
 
+userRoutes.put('/color', authMiddleware, async (req, res) => {
+  const username = res.locals.username;
+  const { color } = req.body;
+  const errMessage = validateColor(color, username);
+
+  console.log(username);
+  if (errMessage) {
+    return res.status(400).send(errMessage);
+  }
+
+  try {
+    await setColor(username, color);
+  } catch (e) {
+    return res.status(500).send('Error setting color');
+  }
+
+  log(`${username} updated color to ${color}`);
+  return res.status(204).end();
+});
+
 const validateCredentials = (username: string, password: string) => {
   if (!username) return 'Missing field: username';
   if (!password) return 'Missing field: password';
@@ -73,6 +95,11 @@ const validateRegister = (username: string, password: string) => {
   }
   if (username.length < 5) return `Username can't be shorter than 5`;
   if (password.length < 8) return `Password can't be shorter than 8`;
+};
+
+const validateColor = (color: number, username: string) => {
+  if (!username) return 'Username missing';
+  if (color < 0 || color > 7) return 'Color must be between 0 and 7';
 };
 
 export default userRoutes;

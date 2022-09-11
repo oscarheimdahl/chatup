@@ -5,8 +5,9 @@ import { UserInitialState } from '../types';
 
 export const loggedIn = createAsyncThunk('user/loggedIn', async (token: string) => {
   const res = await axios.get(host + 'user/loggedin', { headers: { Authorization: `Bearer ${token}` } });
-  const username = res.data;
-  return { token, username };
+  const username = res.data.username;
+  const color = res.data.color;
+  return { token, username, color };
 });
 
 export const login = createAsyncThunk(
@@ -46,6 +47,7 @@ const initialState: UserInitialState = {
   token: '',
   room: '',
   username: '',
+  color: 0,
   loginError: {
     forbidden: false,
     serverUnreachable: false,
@@ -78,6 +80,9 @@ export const userSlice = createSlice({
     setRoom: (state, action) => {
       state.room = action.payload;
     },
+    setColor: (state, action) => {
+      state.color = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
@@ -108,6 +113,7 @@ export const userSlice = createSlice({
       }
     });
     builder.addCase(loggedIn.fulfilled, (state, action) => {
+      state.color = action.payload.color;
       state.loggedIn = true;
       state.username = action.payload.username;
       state.token = action.payload.token;
@@ -119,7 +125,7 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { resetLoginError, resetRegisterError, logout, setRoom } = userSlice.actions;
+export const { resetLoginError, resetRegisterError, logout, setRoom, setColor } = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 

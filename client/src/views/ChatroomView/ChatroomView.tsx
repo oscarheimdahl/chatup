@@ -25,6 +25,7 @@ const ChatroomView = ({}: ChatroomViewProps) => {
   const dispatch = useAppDispatch();
   const [newMessages, setNewMessages] = useState<ChatMessage[]>([]);
   const { containerRef: messageContainerRef, scrollToBottom } = useScrollToBottomOnLoad();
+  const color = useAppSelector((s) => s.user.color);
 
   useEffect(() => {
     if (!room) navigate({ pathname: '/' });
@@ -39,7 +40,7 @@ const ChatroomView = ({}: ChatroomViewProps) => {
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message) return;
-    const chatMessage: ChatMessage = { message, room, username, sentDate: new Date() };
+    const chatMessage: ChatMessage = { message, room, username, sentDate: new Date(), color };
     socket.emit('CHAT_MESSAGE', chatMessage, token);
     updateNewMessages(chatMessage);
     setMessage('');
@@ -113,6 +114,8 @@ interface MessagesProps {
 
 const Messages = ({ chatMessages, messageKey = '', setLastUsername = '' }: MessagesProps) => {
   const username = useAppSelector((s) => s.user.username);
+  const ownColor = useAppSelector((s) => s.user.color);
+
   let lastUsername = setLastUsername;
   return (
     <>
@@ -124,7 +127,7 @@ const Messages = ({ chatMessages, messageKey = '', setLastUsername = '' }: Messa
           <div className={'message-row ' + ownMessageClass} key={messageKey + '-' + i}>
             <span className={`message-bubble ${ownMessageClass}`}>
               {showUsername && <span className='sender'>{message.username}</span>}
-              <span className='message'>{message.message}</span>
+              <span className={`message color-${ownMessage ? ownColor : message.color}`}>{message.message}</span>
             </span>
           </div>
         );

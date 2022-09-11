@@ -2,7 +2,7 @@ import { Server } from 'socket.io';
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from '../../types/emits';
 import { decodeToken } from '../db/token';
 import { log } from '../logging/log';
-import { handleChatMessage, handleDisconnect, handleJoinRoomRequest } from './handlers';
+import { initHandlers } from './handlers';
 
 export const connectedUsers = new Map<string, boolean>();
 export const USERNAME_MISSING = 'username_missing';
@@ -30,9 +30,7 @@ io.on('connection', (socket) => {
   connectedUsers.set(username, true);
   log(`${username} connected! SocketID ${socket.id}`);
 
-  socket.on('JOIN_ROOM_REQUEST', (room, token) => handleJoinRoomRequest(room, socket));
-  socket.on('CHAT_MESSAGE', (chatMessage, token) => handleChatMessage(chatMessage, socket));
-  socket.on('disconnect', () => handleDisconnect(username));
+  initHandlers(socket, username);
 });
 
 export default io;

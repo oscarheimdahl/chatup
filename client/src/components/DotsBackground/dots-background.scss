@@ -22,12 +22,12 @@ $hue: 20;
       flex-grow: 1;
       display: grid;
       place-items: center;
+      border: solid rgba(28, 28, 28, 0.323) 1px;
 
       .dot {
         // transition-duration: 2s;
         transition: transform 2s;
-        fill: var(--accent-3);
-        fill: white;
+        fill: #272727;
 
         &.float1 {
           animation: float1 20s infinite;

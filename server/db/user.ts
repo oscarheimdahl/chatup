@@ -19,6 +19,7 @@ export const createUser = async (user: User) => {
     data: {
       username: user.username,
       password: await hash(user.password),
+      color: Math.floor(Math.random() * 8),
     },
   });
 };
@@ -29,4 +30,15 @@ export const getUser = async (username: string) => {
   });
   if (!user?.username || !user.password) return null;
   return user;
+};
+
+export const setColor = async (username: string, colorNum: number) => {
+  await prisma.user.update({
+    where: {
+      username,
+    },
+    data: {
+      color: +colorNum,
+    },
+  });
 };

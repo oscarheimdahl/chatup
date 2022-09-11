@@ -6,6 +6,7 @@ export interface UserInitialState {
   token: string;
   username: string;
   room: '';
+  color: number;
   loginError: {
     forbidden: boolean;
     serverUnreachable: boolean;

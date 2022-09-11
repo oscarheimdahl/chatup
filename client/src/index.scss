@@ -5,11 +5,30 @@
   margin: 0;
   padding: 0;
   --black: #000000;
-  --accent-1: hsl(240, 42%, 30%);
-  --accent-1-dark: hsl(240, 42%, 20%);
-  --accent-2: hsl(13, 70%, 58%);
-  --accent-3: #87c38f;
+  // --accent-1: #2c2c6d;
+  // --accent-1-dark: hsl(240, 42%, 20%);
+  --accent-1: #111111;
+  --accent-1-dark: #000000;
+  --accent-2: hsl(240, 9%, 45%);
+  --accent-3: #d6a939;
+  --gray: #7f7f76;
+  --white: rgb(233, 233, 233);
+  --white-light: rgb(255, 255, 255);
   --danger: rgb(189, 15, 33);
+
+  //https://www.behance.net/gallery/125405749/Top-10-trending-pastel-color-palettes-in-2021
+  --turquoise: #1bbc9b;
+  --green: #27ae61;
+  --blue: #3598db;
+  --purple: #9a59b5;
+  --dark: #34495e;
+  --orange: #e67f22;
+  --yellow: #f1c40f; //F39C11
+  --red: #c1392b; //E84C3D
+
+  --shadow: rgba(0, 0, 0, 0.312) 0px 7px 29px 0px;
+
+  --border-radius: 2px;
   box-sizing: border-box;
   font-size: 1rem;
 }
@@ -34,10 +53,10 @@ body,
 }
 
 .floating-window {
-  background-color: white;
+  background-color: var(--white);
   display: flex;
-  box-shadow: rgba(0, 0, 0, 0.312) 0px 7px 29px 0px;
-  border-radius: 2px;
+  box-shadow: --shadow;
+  border-radius: var(--border-radius);
 }
 
 .gradient-text {
@@ -50,4 +69,29 @@ body,
   background-clip: text;
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(to right, var(--accent-1), var(--danger), var(--accent-2));
+}
+
+.color-0 {
+  background-color: var(--turquoise);
+}
+.color-1 {
+  background-color: var(--blue);
+}
+.color-2 {
+  background-color: var(--purple);
+}
+.color-3 {
+  background-color: var(--dark);
+}
+.color-4 {
+  background-color: var(--orange);
+}
+.color-5 {
+  background-color: var(--yellow);
+}
+.color-6 {
+  background-color: var(--red);
+}
+.color-7 {
+  background-color: var(--green);
 }

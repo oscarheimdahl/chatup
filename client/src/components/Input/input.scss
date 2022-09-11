@@ -8,8 +8,10 @@
   }
 
   input {
+    border-radius: var(--border-radius);
     font-family: inherit;
     border: none;
+    background-color: var(--white-light);
     outline: 1px solid black;
     padding: 0.3rem;
     transition: outline-color 500ms;

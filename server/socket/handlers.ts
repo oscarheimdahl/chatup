@@ -4,9 +4,17 @@ import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketDa
 import { ChatMessage } from '../../types';
 import { createChatroom, getChatroom, joinChatRoom } from '../db/chatroom';
 import { createChatMessage } from '../db/message';
+import { setColor } from '../db/user';
 import { log, logChatMessage, logDisconnect } from '../logging/log';
 import { connectedUsers } from './socket';
 type ChatSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
+
+export const initHandlers = (socket: ChatSocket, username: string) => {
+  socket.on('JOIN_ROOM_REQUEST', (room, token) => handleJoinRoomRequest(room, socket));
+  socket.on('CHAT_MESSAGE', (chatMessage, token) => handleChatMessage(chatMessage, socket));
+  socket.on('COLOR_CHOICE', (colorNum, token) => handleColorChoice(colorNum, socket));
+  socket.on('disconnect', () => handleDisconnect(username));
+};
 
 export const handleDisconnect = (username: string) => {
   connectedUsers.set(username, false);
@@ -15,10 +23,8 @@ export const handleDisconnect = (username: string) => {
 
 export const handleChatMessage = (chatMessage: ChatMessage, socket: ChatSocket) => {
   socket.to(chatMessage.room).emit('CHAT_MESSAGE', chatMessage);
-
-  logChatMessage(chatMessage);
-
   createChatMessage(chatMessage);
+  logChatMessage(chatMessage);
 };
 
 export const handleJoinRoomRequest = async (room: string, socket: ChatSocket) => {
@@ -35,6 +41,14 @@ export const handleJoinRoomRequest = async (room: string, socket: ChatSocket) =>
   await joinChatRoom(chatroom.id, username);
 
   socket.emit('JOINED_ROOM', { room, preExisting });
-  log(`${socket.data.username} joined room ${room}`);
   socket.join(room);
+  log(`${socket.data.username} joined room ${room}`);
+};
+
+export const handleColorChoice = (colorNum: number, socket: ChatSocket) => {
+  const username = socket.data.username;
+  if (!username) return;
+
+  setColor(username, colorNum);
+  log(`${username} changed color to ${colorNum}`);
 };

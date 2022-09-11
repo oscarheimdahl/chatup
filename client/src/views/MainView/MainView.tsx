@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '@src/hooks/useCanDownload';
 import { setRoom } from '@src/store/slices/userSlice';
 import './main-view.scss';
+import ColorChooser from '@src/components/ColorChooser/ColorChooser';
 
 const MainView = () => {
   useAdmin();
@@ -17,6 +18,7 @@ const MainView = () => {
   const [roomName, setRoomName] = useState('');
 
   const socket = useSocket();
+  const color = useAppSelector((s) => s.user.color);
   const token = useAppSelector((s) => s.user.token);
   const dispatch = useAppDispatch();
 
@@ -48,6 +50,7 @@ const MainView = () => {
           />
           <Button type='submit'>Join</Button>
         </form>
+        <ColorChooser />
       </div>
     </div>
   );

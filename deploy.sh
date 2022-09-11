@@ -27,7 +27,7 @@ git fetch
    echo
    /usr/bin/killall screen
    /usr/bin/screen -d -m /usr/bin/bash -c "cd /home/oheim/Desktop/chatup && /usr/bin/git pull && /usr/local/bin/yarn migrate-prod && /usr/local/bin/yarn deploy"
-   /usr/bin/echo "Deployed at $(/usr/bin/date)" >> /home/oheim/Desktop/log.txt
+   /usr/bin/echo "--- DEPLOYED AT $(/usr/bin/date) ---" >> /home/oheim/Desktop/chatup/server/logging/logs.log
    exit 0
  else
    echo -e ${FINISHED}Current branch is up to date with origin/master.${NOCOLOR}

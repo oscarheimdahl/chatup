@@ -6,16 +6,18 @@ import { io, Socket } from 'socket.io-client';
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(host as string);
 const useSocket = () => {
-  // @ts-ignore
-  const [socketConnected, setSocketConnected] = useState(false);
   const token = useAppSelector((s) => s.user.token);
-  // TODO THIS DOESNT WORK
+
   useEffect(() => {
-    if (socketConnected) return;
     socket.auth = { token };
     socket.connect();
-    setSocketConnected(true);
-  }, [socketConnected]);
+
+    const reconnectTimeout = setTimeout(() => {
+      if (socket.disconnected) socket.connect();
+    }, 5000);
+    return () => clearTimeout(reconnectTimeout);
+  }, [token]);
+
   return socket;
 };
 

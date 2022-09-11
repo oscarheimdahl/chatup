@@ -11,6 +11,7 @@ export const useJwtInterceptor = () => {
       if (!request || !request.url || !request.headers || !request.headers.common) return;
       const isApiUrl = request.url.startsWith(host as string);
       if (loggedIn && isApiUrl) {
+        // @ts-ignore
         request.headers.common.Authorization = `Bearer ${token}`;
       }
 

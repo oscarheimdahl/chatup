@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 import * as express from 'express';
 import * as path from 'path';
 import roomRoutes from './routes/chatroom';
-import io from './routes/socket';
+import io from './socket/socket';
 import userRoutes from './routes/user';
 
 const app = express();

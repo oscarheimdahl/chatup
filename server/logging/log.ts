@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { ChatMessage } from '../../types';
-import { connectedUsers } from '../routes/socket';
+import { connectedUsers } from '../socket/socket';
 
 const logLocation = path.resolve('.', 'logging', 'logs.log');
 fs.writeFile(logLocation, '', { flag: 'a+' }, (err) => {

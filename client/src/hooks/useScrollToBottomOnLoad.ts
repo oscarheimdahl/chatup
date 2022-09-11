@@ -1,16 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
-export const useScrollToBottomOnLoad = () => {
+export const useScrollToBottom = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (containerRef.current) {
-        containerRef.current.style.scrollBehavior = '';
-        scrollToBottom();
-      }
-    }, 20);
-  }, [containerRef]);
 
   const scrollToBottom = () => {
     setTimeout(() => {

@@ -11,7 +11,7 @@ import axios from 'axios';
 import { ChatMessage } from '../../../../types';
 import './chatroom-view.scss';
 import { useNavigate } from 'react-router-dom';
-import { useScrollToBottomOnLoad } from '@src/hooks/useScrollToBottomOnLoad';
+import { useScrollToBottom } from '@src/hooks/useScrollToBottomOnLoad';
 
 interface ChatroomViewProps {}
 
@@ -24,7 +24,7 @@ const ChatroomView = ({}: ChatroomViewProps) => {
   const username = useAppSelector((s) => s.user.username);
   const dispatch = useAppDispatch();
   const [newMessages, setNewMessages] = useState<ChatMessage[]>([]);
-  const { containerRef: messageContainerRef, scrollToBottom } = useScrollToBottomOnLoad();
+  const { containerRef: messageContainerRef, scrollToBottom } = useScrollToBottom();
   const color = useAppSelector((s) => s.user.color);
 
   useEffect(() => {
@@ -67,7 +67,12 @@ const ChatroomView = ({}: ChatroomViewProps) => {
           </button>
           <h1>{room}</h1>
         </div>
-        <MessageContainer newMessages={newMessages} messageContainerRef={messageContainerRef} room={room} />
+        <MessageContainer
+          newMessages={newMessages}
+          messageContainerRef={messageContainerRef}
+          room={room}
+          scrollToBottom={scrollToBottom}
+        />
         <form spellCheck='false' autoComplete='off' className='join-room-form' onSubmit={(e) => sendMessage(e)}>
           <section className='message-input-container'>
             <Input name='message-input' value={message} onChange={(e) => setMessage(e.target.value)} />
@@ -83,15 +88,17 @@ interface MessageContainerProps {
   room: string;
   newMessages: ChatMessage[];
   messageContainerRef: React.RefObject<HTMLDivElement>;
+  scrollToBottom: () => void;
 }
 
-const MessageContainer = ({ room, newMessages, messageContainerRef }: MessageContainerProps) => {
+const MessageContainer = ({ room, newMessages, messageContainerRef, scrollToBottom }: MessageContainerProps) => {
   const [oldMessages, setOldMessages] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
     const getMessages = async () => {
       const messages = await axios.get(host + `chatroom/${room}/messages`);
       setOldMessages(messages.data);
+      scrollToBottom();
     };
     getMessages();
   }, []);

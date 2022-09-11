@@ -1,7 +1,16 @@
 #room-view {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
   #room-view-content {
     flex-direction: column;
-    height: calc(100vh - 4rem);
+    height: calc(100% - 8rem);
+    position: relative;
+    max-width: 1000px;
+    // min-width: min(50%, 1200px);
+    width: 100%;
+    margin: 4rem;
     justify-content: space-between;
 
     .room-header {
@@ -14,14 +23,18 @@
 
       .back-button {
         position: absolute;
-        left: 0;
+        left: 0.5rem;
         top: 50%;
         display: grid;
         place-content: center;
         transform: translateY(-50%);
         background-color: transparent;
         border: none;
-        padding: 1rem;
+        padding: 0.5rem;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
 
@@ -73,13 +86,15 @@
     }
 
     .message-input-container {
+      border-top: 1px solid black;
+      display: flex;
       display: flex;
       gap: 0.5rem;
-      margin: 0.5rem;
+      padding: 0.5rem;
+      // margin: 0.5rem;
 
-      input {
-        max-width: calc(100vw - 200px);
-        width: 50rem;
+      section {
+        width: 100%;
       }
     }
   }

@@ -6,33 +6,48 @@ import chatroomDB from '../db/chatroom';
 import chatMessageDB from '../db/message';
 import userDB from '../db/user';
 import { log, logChatMessage, logDisconnect } from '../logging/log';
-import { connectedUsers } from './socket';
+import io, { connectedUsers } from './socket';
 type ChatSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 
 export const initHandlers = (socket: ChatSocket, username: string) => {
   socket.on('JOIN_ROOM_REQUEST', (room, token) => handleJoinRoomRequest(room, socket));
   socket.on('CHAT_MESSAGE', (chatMessage, token) => handleChatMessage(chatMessage, socket));
   socket.on('COLOR_CHOICE', (colorNum, token) => handleColorChoice(colorNum, socket));
-  socket.on('disconnect', () => handleDisconnect(username));
+  socket.on('disconnect', () => handleDisconnect(username, socket));
 };
 
-export const handleDisconnect = (username: string) => {
+export const handleDisconnect = (username: string, socket: ChatSocket) => {
   connectedUsers.set(username, false);
+
+  // socket.rooms.forEach((room) => {
+  //   handleChatMessage(
+  //     {
+  //       message: `${username} leaved the room`,
+  //       username: 'system',
+  //       color: 1,
+  //       room: room,
+  //       sentDate: new Date(),
+  //     },
+  //     socket,
+  //     false
+  //   );
+  // });
+
   logDisconnect(username);
 };
 
-export const handleChatMessage = (chatMessage: ChatMessage, socket: ChatSocket) => {
+export const handleChatMessage = (chatMessage: ChatMessage, socket: ChatSocket, log: boolean = true) => {
   socket.to(chatMessage.room).emit('CHAT_MESSAGE', chatMessage);
   chatMessageDB.create(chatMessage);
-  logChatMessage(chatMessage);
+  if (log) logChatMessage(chatMessage);
 };
 
 export const handleJoinRoomRequest = async (room: string, socket: ChatSocket) => {
-  if (!room) return;
+  if (!room || !socket.data.username) return;
   let preExisting = false;
-  const username = socket.data.username;
-  if (!username) return;
-
+  const user = await userDB.get(socket.data.username);
+  if (!user) return;
+  const { username, color } = user;
   let chatroom = await chatroomDB.get(room);
   if (chatroom) preExisting = true;
   else chatroom = await chatroomDB.create(room);
@@ -43,9 +58,21 @@ export const handleJoinRoomRequest = async (room: string, socket: ChatSocket) =>
 
   socket.emit('JOINED_ROOM', { room, preExisting });
   socket.join(room);
+  socket.broadcast.to(room).emit('OTHER_JOINED_ROOM', { username, color });
+  handleChatMessage(
+    {
+      message: `${username} joined the room`,
+      username: 'system',
+      color: 1,
+      room: room,
+      sentDate: new Date(),
+    },
+    socket,
+    false
+  );
 
-  if (preExisting) log(`${socket.data.username} joined room ${room}`);
-  else log(`${socket.data.username} created room ${room}`);
+  if (preExisting) log(`${username} joined room ${room}`);
+  else log(`${username} created room ${room}`);
 };
 
 export const handleColorChoice = (colorNum: number, socket: ChatSocket) => {

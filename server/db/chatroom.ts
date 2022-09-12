@@ -30,12 +30,4 @@ const get = async (name: string) => {
   return chatroom;
 };
 
-const users = async (name: string) => {
-  const users = await prisma.chatroom.findMany({
-    where: { name: name },
-    select: { users: true },
-  });
-  return users;
-};
-
-export default { create, join, get, users };
+export default { create, join, get };

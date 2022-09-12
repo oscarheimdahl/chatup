@@ -6,7 +6,7 @@ import { initHandlers } from './handlers';
 
 export const connectedUsers = new Map<string, boolean>();
 export const USERNAME_MISSING = 'username_missing';
-const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>();
+export const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>();
 
 io.use(async (socket, next) => {
   let handshake = socket.handshake;

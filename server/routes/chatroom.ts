@@ -1,6 +1,7 @@
 import * as express from 'express';
 import chatroomDB from '../db/chatroom';
 import chatMessageDB from '../db/message';
+import userDB from '../db/user';
 import { authMiddleware } from '../middleware/auth';
 
 const chatroomRoutes = express.Router();
@@ -45,7 +46,7 @@ chatroomRoutes.get('/:name/users', async (req, res) => {
     return;
   }
   try {
-    const chatroomUsers = await chatroomDB.get(chatroomName);
+    const chatroomUsers = await userDB.inRoom(chatroomId);
     res.send(chatroomUsers).status(200);
   } catch (e) {
     res.status(500).send('Unable to get chatroom users');

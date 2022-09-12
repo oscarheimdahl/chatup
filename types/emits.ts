@@ -4,6 +4,7 @@ export interface ServerToClientEvents {
   INVALID_TOKEN: () => void;
   CHAT_MESSAGE: (chatMessage: ChatMessage) => void;
   JOINED_ROOM: ({ preExisting, room }: { preExisting: boolean; room: string }) => void;
+  OTHER_JOINED_ROOM: (user: User) => void;
 }
 
 export interface ClientToServerEvents {

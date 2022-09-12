@@ -68,7 +68,6 @@ userRoutes.put('/color', authMiddleware, async (req, res) => {
   const { color } = req.body;
   const errMessage = validateColor(color, username);
 
-  console.log(username);
   if (errMessage) {
     return res.status(400).send(errMessage);
   }

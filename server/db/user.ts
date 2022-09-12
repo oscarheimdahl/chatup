@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { hash } from './hash';
+import chatroomDB from './chatroom';
 
 const prisma = new PrismaClient();
 
@@ -43,4 +44,31 @@ const setColor = async (username: string, colorNum: number) => {
   });
 };
 
-export default { create, get, setColor };
+const inRoom = async (chatroomId: number) => {
+  const useridsInChatroom = await prisma.userChatroom.findMany({
+    where: {
+      chatroomId: chatroomId,
+    },
+    select: {
+      userId: true,
+    },
+  });
+  const userIds = useridsInChatroom.map((user) => user.userId);
+
+  const users = await prisma.user.findMany({
+    where: {
+      id: {
+        in: userIds,
+      },
+    },
+    select: {
+      password: false,
+      color: true,
+      username: true,
+    },
+  });
+
+  return users;
+};
+
+export default { create, get, setColor, inRoom };

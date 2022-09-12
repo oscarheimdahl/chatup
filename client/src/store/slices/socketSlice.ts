@@ -17,7 +17,6 @@
 //   initialState: initialState,
 //   reducers: {
 //     setSocket: (state, action: PayloadAction<typeof initialState.socket>) => {
-//       console.log(action.payload);
 //     },
 //   },
 //   extraReducers: (builder) => {

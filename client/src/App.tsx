@@ -3,7 +3,7 @@ import LoginView from '@views/LoginView/LoginView';
 import MainView from '@views/MainView/MainView';
 import { useEffect, useState } from 'react';
 import { Route, Router, Routes } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import ControlPanel from './components/ControlPanel/ControlPanel';
 import DotsBackground from './components/DotsBackground/DotsBackground';
 import { theme } from './config/theme';
@@ -49,11 +49,11 @@ const View = () => {
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <HashRouter>
         <DotsBackground />
         <ControlPanel />
         <View />
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>
   );
 };

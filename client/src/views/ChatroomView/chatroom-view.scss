@@ -75,6 +75,13 @@
             color: var(--gray);
           }
         }
+
+        .system-message {
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          color: var(--gray);
+        }
       }
     }
 

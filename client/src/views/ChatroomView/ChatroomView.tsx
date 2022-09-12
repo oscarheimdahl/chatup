@@ -91,11 +91,16 @@ interface MessageContainerProps {
   scrollToBottom: () => void;
 }
 
+interface RoomUsers {
+  username: string;
+  color: number;
+}
+
 const MessageContainer = ({ room, newMessages, messageContainerRef, scrollToBottom }: MessageContainerProps) => {
   const [oldMessages, setOldMessages] = useState<ChatMessage[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
+  const [usernameColors, setUsernameColors] = useState<Map<string, number>>(new Map());
   const [showMessages, setShowMessages] = useState(false);
-
+  const socket = useSocket();
   useEffect(() => {
     const getMessages = async () => {
       const res = await axios.get(host + `chatroom/${room}/messages`);
@@ -107,19 +112,39 @@ const MessageContainer = ({ room, newMessages, messageContainerRef, scrollToBott
   }, []);
 
   useEffect(() => {
-    // const getUsersInRoom = async () => {
-    //   const res = await axios.get(host + `chatroom/${room}/users`);
-    //   setUsers(res.data);
-    // };
-    // getUsersInRoom();
+    socket.on('OTHER_JOINED_ROOM', (user) => {
+      const { username, color } = user;
+      const oldColor = usernameColors.get(username);
+      if (oldColor !== color) {
+        setUsernameColors((prevUsernameColors) => {
+          const nextUsernameColors = new Map(prevUsernameColors);
+          nextUsernameColors.set(username, color);
+          return nextUsernameColors;
+        });
+      }
+    });
+    getUsersInRoom();
   }, []);
+
+  const getUsersInRoom = async () => {
+    const res = await axios.get(host + `chatroom/${room}/users`);
+    const users: { username: string; color: number }[] = res.data;
+    const roomUsersMap = new Map<string, number>();
+    users.map((user) => roomUsersMap.set(user.username, user.color));
+    setUsernameColors(roomUsersMap);
+  };
 
   const lastOldMessageUsername = oldMessages[oldMessages.length - 1]?.username ?? '';
 
   return (
     <section style={{ opacity: showMessages ? 1 : 0 }} ref={messageContainerRef} className='message-container'>
-      <Messages chatMessages={oldMessages} messageKey='old-messages' />
-      <Messages chatMessages={newMessages} messageKey='new-messages' setLastUsername={lastOldMessageUsername} />
+      <Messages chatMessages={oldMessages} usernameColors={usernameColors} messageKey='old-messages' />
+      <Messages
+        chatMessages={newMessages}
+        usernameColors={usernameColors}
+        messageKey='new-messages'
+        setLastUsername={lastOldMessageUsername}
+      />
     </section>
   );
 };
@@ -128,26 +153,35 @@ interface MessagesProps {
   chatMessages: ChatMessage[];
   messageKey: string;
   setLastUsername?: string;
+  usernameColors: Map<string, number>;
 }
 
-const Messages = ({ chatMessages, messageKey = '', setLastUsername = '' }: MessagesProps) => {
+const Messages = ({ chatMessages, messageKey = '', setLastUsername = '', usernameColors }: MessagesProps) => {
   const username = useAppSelector((s) => s.user.username);
-  const ownColor = useAppSelector((s) => s.user.color);
 
   let lastUsername = setLastUsername;
+
   return (
     <>
       {chatMessages.map((message, i) => {
         const ownMessage = message.username === username;
         const ownMessageClass = ownMessage ? 'own-message' : '';
         const showUsername = !ownMessage && lastUsername !== message.username;
-        const messageColor = ownMessage ? ownColor : message.color;
+
+        const MessageBubble = () => (
+          <span className={`message-bubble ${ownMessageClass}`}>
+            {showUsername && <span className='sender'>{message.username}</span>}
+            <span className={`message color-${usernameColors.get(message.username)}`}>{message.message}</span>
+          </span>
+        );
+
         const messageRender = (
           <div className={'message-row ' + ownMessageClass} key={messageKey + '-' + i}>
-            <span className={`message-bubble ${ownMessageClass}`}>
-              {showUsername && <span className='sender'>{message.username}</span>}
-              <span className={`message color-${messageColor}`}>{message.message}</span>
-            </span>
+            {message.username === 'system' ? (
+              <span className='system-message'>{message.message}</span>
+            ) : (
+              <MessageBubble />
+            )}
           </div>
         );
         lastUsername = message.username;

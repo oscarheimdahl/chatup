@@ -6,7 +6,7 @@ import chatroomDB from '../db/chatroom';
 import chatMessageDB from '../db/message';
 import userDB from '../db/user';
 import { log, logChatMessage, logDisconnect } from '../logging/log';
-import io, { connectedUsers } from './socket';
+import io, { connectedUsers, socketRooms } from './socket';
 type ChatSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 
 export const initHandlers = (socket: ChatSocket, username: string) => {
@@ -18,7 +18,7 @@ export const initHandlers = (socket: ChatSocket, username: string) => {
 
 export const handleDisconnect = (username: string, socket: ChatSocket) => {
   connectedUsers.set(username, false);
-
+  socketRooms.delete(username);
   // socket.rooms.forEach((room) => {
   //   handleChatMessage(
   //     {
@@ -70,6 +70,10 @@ export const handleJoinRoomRequest = async (room: string, socket: ChatSocket) =>
     socket,
     false
   );
+
+  // const oldRoom = socketRooms.get(username);
+  // if (oldRoom) socket.leave(oldRoom);
+  // socketRooms.set(username, room);
 
   if (preExisting) log(`${username} joined room ${room}`);
   else log(`${username} created room ${room}`);

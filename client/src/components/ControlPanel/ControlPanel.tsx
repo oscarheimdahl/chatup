@@ -1,15 +1,24 @@
-import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { logout } from '@src/store/slices/userSlice';
-import Button from '../Button/Button';
-import './control-panel.scss';
 import KeyboardArrowDownSharpIcon from '@mui/icons-material/KeyboardArrowDownSharp';
 import Person from '@mui/icons-material/Person';
-import { theme } from '@src/config/theme';
+import useSocket from '@src/hooks/useSocket';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
+import { logout } from '@src/store/slices/userSlice';
+import { useNavigate } from 'react-router';
+import Button from '../Button/Button';
+import './control-panel.scss';
 
 const ControlPanel = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const loggedIn = useAppSelector((s) => s.user.loggedIn);
   const username = useAppSelector((s) => s.user.username);
+  const socket = useSocket();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    socket.disconnect();
+    navigate({ pathname: '/' });
+  };
 
   if (!loggedIn) return <></>;
   return (
@@ -19,7 +28,7 @@ const ControlPanel = () => {
           <Person className='user-icon' />
           <b>{username}</b>
         </section>
-        <Button onClick={() => dispatch(logout())}>Logout</Button>
+        <Button onClick={handleLogout}>Logout</Button>
         <KeyboardArrowDownSharpIcon className='indicator' />
       </div>
     </div>

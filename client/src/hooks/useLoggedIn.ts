@@ -1,14 +1,15 @@
-import { useAppDispatch } from '@src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { loggedIn, logout } from '@src/store/slices/userSlice';
 import { useEffect } from 'react';
 
 const useLoggedIn = () => {
   const dispatch = useAppDispatch();
-  const token = window.localStorage.getItem('token');
+  const storedToken = window.localStorage.getItem('token');
+  const token = useAppSelector((s) => s.user.token);
 
   useEffect(() => {
-    if (token) dispatch(loggedIn(token));
+    if (storedToken) dispatch(loggedIn(storedToken));
     else dispatch(logout());
-  }, []);
+  }, [token, storedToken]);
 };
 export default useLoggedIn;

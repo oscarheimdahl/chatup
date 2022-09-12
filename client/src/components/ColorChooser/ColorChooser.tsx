@@ -15,7 +15,7 @@ const ColorChooser = ({}: ColorChooserProps) => {
     const colorNum = +e.target.value;
     if (colorNum === undefined) return;
 
-    const res = await axios.put(host + 'user/color', { color: colorNum });
+    await axios.put(host + 'user/color', { color: colorNum });
     dispatch(setColor(colorNum));
   };
 

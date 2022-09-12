@@ -97,6 +97,8 @@ interface RoomUsers {
 }
 
 const MessageContainer = ({ room, newMessages, messageContainerRef, scrollToBottom }: MessageContainerProps) => {
+  const ownUsername = useAppSelector((s) => s.user.username);
+  const ownColor = useAppSelector((s) => s.user.color);
   const [oldMessages, setOldMessages] = useState<ChatMessage[]>([]);
   const [usernameColors, setUsernameColors] = useState<Map<string, number>>(new Map());
   const [showMessages, setShowMessages] = useState(false);
@@ -115,10 +117,13 @@ const MessageContainer = ({ room, newMessages, messageContainerRef, scrollToBott
     socket.on('OTHER_JOINED_ROOM', (user) => {
       const { username, color } = user;
       const oldColor = usernameColors.get(username);
+      console.log(`${username} joined with color; ${color} we have stored color: ${oldColor}`);
       if (oldColor !== color) {
         setUsernameColors((prevUsernameColors) => {
+          console.log(prevUsernameColors);
           const nextUsernameColors = new Map(prevUsernameColors);
           nextUsernameColors.set(username, color);
+          console.log(nextUsernameColors);
           return nextUsernameColors;
         });
       }
@@ -131,6 +136,7 @@ const MessageContainer = ({ room, newMessages, messageContainerRef, scrollToBott
     const users: { username: string; color: number }[] = res.data;
     const roomUsersMap = new Map<string, number>();
     users.map((user) => roomUsersMap.set(user.username, user.color));
+    roomUsersMap.set(ownUsername, ownColor);
     setUsernameColors(roomUsersMap);
   };
 
@@ -167,11 +173,13 @@ const Messages = ({ chatMessages, messageKey = '', setLastUsername = '', usernam
         const ownMessage = message.username === username;
         const ownMessageClass = ownMessage ? 'own-message' : '';
         const showUsername = !ownMessage && lastUsername !== message.username;
+        const oldUserColor = usernameColors.get(message.username);
+        let messageColor = oldUserColor ?? message.color;
 
         const MessageBubble = () => (
           <span className={`message-bubble ${ownMessageClass}`}>
             {showUsername && <span className='sender'>{message.username}</span>}
-            <span className={`message color-${usernameColors.get(message.username)}`}>{message.message}</span>
+            <span className={`message color-${messageColor}`}>{message.message}</span>
           </span>
         );
 

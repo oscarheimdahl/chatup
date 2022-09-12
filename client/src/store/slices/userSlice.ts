@@ -13,6 +13,7 @@ export const loggedIn = createAsyncThunk('user/loggedIn', async (token: string) 
 export const login = createAsyncThunk(
   'user/login',
   async (user: { username: string; password: string }, { rejectWithValue }) => {
+    localStorage.removeItem('token');
     try {
       const res = await axios.post(host + 'user/login', {
         username: user.username,

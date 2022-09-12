@@ -5,6 +5,7 @@ import { log } from '../logging/log';
 import { initHandlers } from './handlers';
 
 export const connectedUsers = new Map<string, boolean>();
+export const socketRooms = new Map<string, string>();
 export const USERNAME_MISSING = 'username_missing';
 export const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>();
 
@@ -26,7 +27,6 @@ io.use(async (socket, next) => {
 
 io.on('connection', (socket) => {
   const username = socket.data.username ?? USERNAME_MISSING;
-  if (connectedUsers.get(username)) return socket.disconnect();
   connectedUsers.set(username, true);
   log(`${username} connected! SocketID ${socket.id}`);
 

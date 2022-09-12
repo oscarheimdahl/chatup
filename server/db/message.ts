@@ -1,16 +1,16 @@
 import { ChatMessage } from '../../types';
 import { log } from '../logging/log';
-import { getChatroom } from './chatroom';
+import chatroomDB from './chatroom';
 import { prisma } from './init';
-import { getUser } from './user';
+import userDB from './user';
 
-export const createChatMessage = async (chatMessage: ChatMessage) => {
-  const user = await getUser(chatMessage.username);
+const create = async (chatMessage: ChatMessage) => {
+  const user = await userDB.get(chatMessage.username);
   if (!user?.id) {
     log(`Unable to create chatmessage, missing userId on username: ${chatMessage.username}`);
     return;
   }
-  const chatroom = await getChatroom(chatMessage.room);
+  const chatroom = await chatroomDB.get(chatMessage.room);
   if (!chatroom?.id) {
     log(`Unable to create chatmessage, missing id on chatroom: ${chatMessage.room}`);
     return;
@@ -25,7 +25,7 @@ export const createChatMessage = async (chatMessage: ChatMessage) => {
   });
 };
 
-export const getMessages = async (chatroomId: number): Promise<ChatMessage[]> => {
+const get = async (chatroomId: number): Promise<ChatMessage[]> => {
   const messages = await prisma.chatMessage.findMany({
     where: { chatroomId },
     select: {
@@ -57,3 +57,5 @@ export const getMessages = async (chatroomId: number): Promise<ChatMessage[]> =>
 
   return chatMessages;
 };
+
+export default { get, create };

@@ -2,7 +2,7 @@ import * as cors from 'cors';
 import * as dotenv from 'dotenv';
 import * as express from 'express';
 import * as path from 'path';
-import roomRoutes from './routes/chatroom';
+import chatroomRoutes from './routes/chatroom';
 import io from './socket/socket';
 import userRoutes from './routes/user';
 import adminRoutes from './routes/admin';
@@ -14,7 +14,7 @@ app.use(cors({ origin }));
 app.use(express.json());
 
 app.use('/user', userRoutes);
-app.use('/chatroom', roomRoutes);
+app.use('/chatroom', chatroomRoutes);
 app.use('/admin', adminRoutes);
 
 app.use('/', express.static(path.resolve(__dirname, '..', 'client', 'dist')));

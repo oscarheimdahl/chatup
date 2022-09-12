@@ -11,7 +11,11 @@ interface User {
   password: string;
 }
 
-const LoginView = () => {
+interface LoginViewProps {
+  loginTransition: boolean;
+}
+
+const LoginView = ({ loginTransition }: LoginViewProps) => {
   const [showRegister, setShowRegister] = useState(false);
   const [registeredUser, setRegisteredUser] = useState<User>();
 
@@ -25,9 +29,9 @@ const LoginView = () => {
   };
 
   return (
-    <div id='login-view'>
+    <div id='login-view' className={`${loginTransition ? 'login-transition' : ''}`}>
       <h1 className='login-title'>{showRegister ? 'Register' : 'Login'}</h1>
-      <div id='form-bg' className='floating-window'>
+      <div id='form-bg' style={{}} className={`floating-window`}>
         <LoginForm
           registeredUser={registeredUser}
           className={showRegister ? 'scoot' : ''}
@@ -64,6 +68,7 @@ const LoginForm = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    localStorage.setItem('show-login-transition', 'true');
     if (!username || !password) return setMissingFields(true);
     dispatch(login({ username, password }));
   };

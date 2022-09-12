@@ -1,7 +1,5 @@
-import * as path from 'path';
 import * as express from 'express';
-import { createChatroom, getChatroom } from '../db/chatroom';
-import { getMessages } from '../db/message';
+import * as path from 'path';
 import { authMiddleware } from '../middleware/auth';
 
 const adminRoutes = express.Router();

@@ -8,8 +8,8 @@ interface User {
   password: string;
 }
 
-export const createUser = async (user: User) => {
-  const oldUser = await getUser(user.username);
+const create = async (user: User) => {
+  const oldUser = await get(user.username);
 
   if (oldUser) {
     return 'Username already taken.';
@@ -24,7 +24,7 @@ export const createUser = async (user: User) => {
   });
 };
 
-export const getUser = async (username: string) => {
+const get = async (username: string) => {
   const user = await prisma.user.findFirst({
     where: { username: username },
   });
@@ -32,7 +32,7 @@ export const getUser = async (username: string) => {
   return user;
 };
 
-export const setColor = async (username: string, colorNum: number) => {
+const setColor = async (username: string, colorNum: number) => {
   await prisma.user.update({
     where: {
       username,
@@ -42,3 +42,5 @@ export const setColor = async (username: string, colorNum: number) => {
     },
   });
 };
+
+export default { create, get, setColor };

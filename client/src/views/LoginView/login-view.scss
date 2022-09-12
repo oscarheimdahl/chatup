@@ -6,7 +6,11 @@
   height: 100%;
   flex-direction: column;
   overflow: hidden;
-  transition: transform 400ms;
+  transition: opacity 400ms;
+
+  &.login-transition {
+    opacity: 0;
+  }
 
   .col-section {
     display: flex;
@@ -22,6 +26,7 @@
     padding-bottom: 0.2rem;
     font-weight: 400;
     text-shadow: black 0px 0px 10px;
+    transition: opacity 200ms;
   }
 
   #form-bg {
@@ -29,6 +34,7 @@
     width: 17rem;
     position: relative;
     overflow-x: hidden;
+    transition: opacity 200ms;
 
     .form-container {
       flex-shrink: 0;

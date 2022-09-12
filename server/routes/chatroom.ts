@@ -1,18 +1,18 @@
 import * as express from 'express';
-import { createChatroom, getChatroom } from '../db/chatroom';
-import { getMessages } from '../db/message';
+import chatroomDB from '../db/chatroom';
+import chatMessageDB from '../db/message';
 import { authMiddleware } from '../middleware/auth';
 
-const roomRoutes = express.Router();
+const chatroomRoutes = express.Router();
 
-roomRoutes.use(authMiddleware);
+chatroomRoutes.use(authMiddleware);
 
-roomRoutes.get('/:name/messages', async (req, res) => {
+chatroomRoutes.get('/:name/messages', async (req, res) => {
   const chatroomName = req.params.name;
   if (!chatroomName) {
     res.status(404).send('Chatroom name missing');
   }
-  const chatroom = await getChatroom(chatroomName);
+  const chatroom = await chatroomDB.get(chatroomName);
   if (!chatroom) {
     res.status(404).send('No chatroom with that name');
   }
@@ -22,7 +22,7 @@ roomRoutes.get('/:name/messages', async (req, res) => {
     return;
   }
   try {
-    const messages = await getMessages(chatroom.id);
+    const messages = await chatMessageDB.get(chatroom.id);
     res.send(messages).status(200);
   } catch (e) {
     res.status(500).send('Unable to get messages');
@@ -30,4 +30,27 @@ roomRoutes.get('/:name/messages', async (req, res) => {
   }
 });
 
-export default roomRoutes;
+chatroomRoutes.get('/:name/users', async (req, res) => {
+  const chatroomName = req.params.name;
+  if (!chatroomName) {
+    res.status(404).send('Chatroom name missing');
+  }
+  const chatroom = await chatroomDB.get(chatroomName);
+  if (!chatroom) {
+    res.status(404).send('No chatroom with that name');
+  }
+  const chatroomId = chatroom?.id;
+  if (!chatroomId) {
+    res.status(500).send('Unable to get chatroom');
+    return;
+  }
+  try {
+    const chatroomUsers = await chatroomDB.get(chatroomName);
+    res.send(chatroomUsers).status(200);
+  } catch (e) {
+    res.status(500).send('Unable to get chatroom users');
+    return;
+  }
+});
+
+export default chatroomRoutes;

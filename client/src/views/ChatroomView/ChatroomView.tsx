@@ -93,20 +93,31 @@ interface MessageContainerProps {
 
 const MessageContainer = ({ room, newMessages, messageContainerRef, scrollToBottom }: MessageContainerProps) => {
   const [oldMessages, setOldMessages] = useState<ChatMessage[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [showMessages, setShowMessages] = useState(false);
 
   useEffect(() => {
     const getMessages = async () => {
-      const messages = await axios.get(host + `chatroom/${room}/messages`);
-      setOldMessages(messages.data);
+      const res = await axios.get(host + `chatroom/${room}/messages`);
+      setOldMessages(res.data);
       scrollToBottom();
+      setTimeout(() => setShowMessages(true), 300);
     };
     getMessages();
+  }, []);
+
+  useEffect(() => {
+    // const getUsersInRoom = async () => {
+    //   const res = await axios.get(host + `chatroom/${room}/users`);
+    //   setUsers(res.data);
+    // };
+    // getUsersInRoom();
   }, []);
 
   const lastOldMessageUsername = oldMessages[oldMessages.length - 1]?.username ?? '';
 
   return (
-    <section ref={messageContainerRef} className='message-container'>
+    <section style={{ opacity: showMessages ? 1 : 0 }} ref={messageContainerRef} className='message-container'>
       <Messages chatMessages={oldMessages} messageKey='old-messages' />
       <Messages chatMessages={newMessages} messageKey='new-messages' setLastUsername={lastOldMessageUsername} />
     </section>
@@ -130,11 +141,12 @@ const Messages = ({ chatMessages, messageKey = '', setLastUsername = '' }: Messa
         const ownMessage = message.username === username;
         const ownMessageClass = ownMessage ? 'own-message' : '';
         const showUsername = !ownMessage && lastUsername !== message.username;
+        const messageColor = ownMessage ? ownColor : message.color;
         const messageRender = (
           <div className={'message-row ' + ownMessageClass} key={messageKey + '-' + i}>
             <span className={`message-bubble ${ownMessageClass}`}>
               {showUsername && <span className='sender'>{message.username}</span>}
-              <span className={`message color-${ownMessage ? ownColor : message.color}`}>{message.message}</span>
+              <span className={`message color-${messageColor}`}>{message.message}</span>
             </span>
           </div>
         );

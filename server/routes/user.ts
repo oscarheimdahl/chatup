@@ -1,14 +1,14 @@
 import * as express from 'express';
 import { compareHash } from '../db/hash';
 import { generateNewToken } from '../db/token';
-import { createUser, getUser, setColor } from '../db/user';
+import userDB from '../db/user';
 import { log } from '../logging/log';
 import { authMiddleware } from '../middleware/auth';
 
 const userRoutes = express.Router();
 
 userRoutes.get('/loggedin', authMiddleware, async (req, res) => {
-  const user = await getUser(res.locals.username);
+  const user = await userDB.get(res.locals.username);
   if (!user) return res.status(500);
   res.status(200).send({ username: user.username, color: user.color });
 });
@@ -21,7 +21,7 @@ userRoutes.post('/login', async (req, res) => {
     return res.status(400).send(errMessage);
   }
 
-  const user = await getUser(username);
+  const user = await userDB.get(username);
   if (!user) {
     return res.status(403).end();
   }
@@ -51,7 +51,7 @@ userRoutes.post('/register', async (req, res) => {
   }
 
   try {
-    const oldUserErr = await createUser({ username, password });
+    const oldUserErr = await userDB.create({ username, password });
     if (oldUserErr) {
       return res.status(409).send(oldUserErr);
     }
@@ -74,7 +74,7 @@ userRoutes.put('/color', authMiddleware, async (req, res) => {
   }
 
   try {
-    await setColor(username, color);
+    await userDB.setColor(username, color);
   } catch (e) {
     return res.status(500).send('Error setting color');
   }

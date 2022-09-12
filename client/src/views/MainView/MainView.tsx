@@ -1,6 +1,6 @@
 import useSocket from '@src/hooks/useSocket';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Button from '@src/components/Button/Button';
 import Input from '@src/components/Input/Input';
@@ -12,13 +12,26 @@ import './main-view.scss';
 import ColorChooser from '@src/components/ColorChooser/ColorChooser';
 
 const MainView = () => {
+  const [visible, setVisible] = useState(false);
+  const [useTransition, setUseTransition] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem('show-login-transition') === 'true') {
+      setTimeout(() => {
+        setVisible(true);
+        setUseTransition(true);
+      });
+      localStorage.removeItem('show-login-transition');
+    } else {
+      setVisible(true);
+    }
+  }, []);
+
   useAdmin();
   const navigate = useNavigate();
 
   const [roomName, setRoomName] = useState('');
 
   const socket = useSocket();
-  const color = useAppSelector((s) => s.user.color);
   const token = useAppSelector((s) => s.user.token);
   const dispatch = useAppDispatch();
 
@@ -38,7 +51,11 @@ const MainView = () => {
   };
 
   return (
-    <div id='main-view' className='full-screen'>
+    <div
+      id='main-view'
+      style={{ opacity: visible ? 1 : 0, transitionDuration: useTransition ? '800ms' : '0' }}
+      className='full-screen'
+    >
       <div id='main-view-content' className='floating-window'>
         <form spellCheck='false' autoComplete='off' className='join-room-form' onSubmit={(e) => joinRoom(e)}>
           <Input

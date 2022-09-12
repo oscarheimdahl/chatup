@@ -10,8 +10,6 @@ interface ColorChooserProps {}
 const ColorChooser = ({}: ColorChooserProps) => {
   const dispatch = useAppDispatch();
   const color = useAppSelector((s) => s.user.color);
-  console.log(color);
-  // const [choice, setChoice] = useState(0);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const colorNum = +e.target.value;

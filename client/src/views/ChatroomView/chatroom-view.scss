@@ -45,13 +45,12 @@
       height: 100%;
       overflow: scroll;
       padding: 0.5rem 1rem;
-      // scroll-behavior: smooth;
+      transition: opacity 1000ms;
 
       .message-row {
         width: 100%;
         display: flex;
         color: white;
-        // background-color: red;
 
         &.own-message {
           justify-content: end;

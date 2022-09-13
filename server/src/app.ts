@@ -17,7 +17,7 @@ app.use('/user', userRoutes);
 app.use('/chatroom', chatroomRoutes);
 app.use('/admin', adminRoutes);
 
-app.use('/', express.static(path.resolve(__dirname, '..', 'client', 'dist')));
+app.use('/', express.static(path.resolve(__dirname, '..', '..', 'client', 'dist')));
 
 app.get('*', (req, res) => {
   res.status(404).sendFile(path.resolve(__dirname, 'public', 'index.html'));

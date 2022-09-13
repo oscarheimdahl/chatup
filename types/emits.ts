@@ -16,6 +16,7 @@ export interface ClientToServerEvents {
   JOIN_ROOM_REQUEST: (room: string, token: string) => void;
   CHAT_MESSAGE: (chatMessage: ChatMessage, token: string) => void;
   COLOR_CHOICE: (colorNum: number, token: string) => void;
+  LEAVE_ROOM: () => void;
 }
 
 export interface InterServerEvents {

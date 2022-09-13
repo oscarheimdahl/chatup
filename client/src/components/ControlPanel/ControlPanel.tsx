@@ -1,6 +1,6 @@
 import KeyboardArrowDownSharpIcon from '@mui/icons-material/KeyboardArrowDownSharp';
 import Person from '@mui/icons-material/Person';
-import useSocket from '@src/hooks/useSocket';
+import { socket } from '@src/App';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { logout } from '@src/store/slices/userSlice';
 import { useNavigate } from 'react-router';
@@ -12,7 +12,6 @@ const ControlPanel = () => {
   const navigate = useNavigate();
   const loggedIn = useAppSelector((s) => s.user.loggedIn);
   const username = useAppSelector((s) => s.user.username);
-  const socket = useSocket();
 
   const handleLogout = () => {
     dispatch(logout());

@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from '../../types/emits';
+import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from '../../../types/emits';
 import { decodeToken } from '../db/token';
 import { log } from '../logging/log';
 import { initHandlers } from './handlers';

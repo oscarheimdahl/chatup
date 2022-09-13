@@ -5,8 +5,8 @@
   "license": "MIT",
   "module": "es2022",
   "scripts": {
-    "start": "ts-node app.ts",
-    "dev": "nodemon app.ts",
+    "start": "ts-node src/app.ts",
+    "dev": "nodemon src/app.ts",
     "dev-db": "pg_ctl -D ~/.postgres/ -l logfile start",
     "migrate": "prisma migrate dev"
   },

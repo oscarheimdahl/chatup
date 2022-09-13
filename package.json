@@ -7,9 +7,10 @@
   "license": "MIT",
   "dependencies": {},
   "scripts": {
-    "dev": "concurrently \"cd client && yarn dev\" \"cd server && yarn dev-db\" \"cd server && yarn dev\"",
+    "dev": "concurrently \"cd client && yarn dev\" \"cd server && yarn dev-db; yarn dev\"",
     "migrate-prod": "cd server && yarn prisma migrate deploy",
-    "deploy": "cd client && yarn build && cd ../server && ts-node app.ts"
+    "deploy": "(cd client && yarn build) && ts-node server/src/app.ts",
+    "yarn": "(cd client rm -rf node_modules && yarn) && (cd server && rm -rf node_modules && yarn) && rm -rf node_modules && yarn"
   },
   "devDependencies": {
     "concurrently": "^7.3.0"

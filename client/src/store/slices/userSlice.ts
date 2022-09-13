@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { host } from '@src/config/vars';
 import axios, { AxiosError } from 'axios';
+import { io } from 'socket.io-client';
 import { UserInitialState } from '../types';
 
 export const loggedIn = createAsyncThunk('user/loggedIn', async (token: string) => {
@@ -97,7 +98,7 @@ export const userSlice = createSlice({
     builder.addCase(login.fulfilled, (state, action) => {
       state.token = action.payload.token;
       state.username = action.payload.username;
-      window.localStorage.setItem('token', state.token);
+      window.localStorage.setItem('token', action.payload.token);
       state.loggedIn = true;
     });
     builder.addCase(login.rejected, (state, action) => {

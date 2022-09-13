@@ -1,4 +1,4 @@
-import { ChatMessage } from '../../types';
+import { ChatMessage } from '../../../types';
 import { log } from '../logging/log';
 import chatroomDB from './chatroom';
 import { prisma } from './init';

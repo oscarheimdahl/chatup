@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-// import socketReducer from './slices/socketSlice';
+import socketReducer from './slices/socketSlice';
 import userReducer from './slices/userSlice';
 
 const store = configureStore({

@@ -1,4 +1,4 @@
-import { useSocketOn } from '@src/hooks/useSocket';
+import { useSocketOn } from '@src/hooks/useSocketOn';
 import { useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 

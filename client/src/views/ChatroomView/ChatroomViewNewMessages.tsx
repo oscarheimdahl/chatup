@@ -1,7 +1,8 @@
-import useSocket, { useSocketOn } from '@src/hooks/useSocket';
+import { useSocketOn } from '@src/hooks/useSocketOn';
 import { useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 
+import { socket } from '@src/App';
 import { setMessage, setShouldSendMessage } from '@src/store/slices/userSlice';
 import { useDispatch } from 'react-redux';
 import { ChatMessage } from '../../../../types';
@@ -23,7 +24,7 @@ const NewMessages = ({ usernameColors, scrollToBottom }: NewMessagesProps) => {
     (s) => s.user.message,
     () => !shouldSendMessage
   );
-  const socket = useSocket();
+
   const [newMessages, setNewMessages] = useState<ChatMessage[]>([]);
   const dispatch = useDispatch();
 

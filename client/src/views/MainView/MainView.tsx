@@ -1,4 +1,4 @@
-import useSocket, { useSocketOn } from '@src/hooks/useSocket';
+import { useSocketOn } from '@src/hooks/useSocketOn';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 
@@ -6,18 +6,18 @@ import Button from '@src/components/Button/Button';
 import Input from '@src/components/Input/Input';
 import { useNavigate } from 'react-router-dom';
 
+import { socket } from '@src/App';
+import ColorChooser from '@src/components/ColorChooser/ColorChooser';
 import { useAdmin } from '@src/hooks/useCanDownload';
 import { setRoom } from '@src/store/slices/userSlice';
-import './main-view.scss';
-import ColorChooser from '@src/components/ColorChooser/ColorChooser';
 import { RoomJoinResponse } from '../../../../types';
+import './main-view.scss';
 
 const MainView = () => {
   const [visible, setVisible] = useState(false);
   const [useTransition, setUseTransition] = useState(false);
   const navigate = useNavigate();
   const [roomName, setRoomName] = useState('');
-  const socket = useSocket();
   const token = useAppSelector((s) => s.user.token);
   const dispatch = useAppDispatch();
 
@@ -47,6 +47,7 @@ const MainView = () => {
 
   const joinRoom = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     socket.emit('JOIN_ROOM_REQUEST', roomName, token);
   };
 

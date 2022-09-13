@@ -1,8 +1,8 @@
-import useSocket from '@src/hooks/useSocket';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 
 import KeyboardArrowLeftSharpIcon from '@mui/icons-material/KeyboardArrowLeftSharp';
+import { socket } from '@src/App';
 import Button from '@src/components/Button/Button';
 import Input from '@src/components/Input/Input';
 import { useScrollToBottom } from '@src/hooks/useScrollToBottomOnLoad';
@@ -27,6 +27,7 @@ const ChatroomView = ({}: ChatroomViewProps) => {
   const handleBack = () => {
     dispatch(setRoom(''));
     navigate({ pathname: '/' });
+    socket.emit('LEAVE_ROOM');
   };
 
   if (!room) return <></>;

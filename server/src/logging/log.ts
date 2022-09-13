@@ -1,10 +1,11 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { ChatMessage } from '../../types';
+import { ChatMessage } from '../../../types';
 import { connectedUsers } from '../socket/socket';
 
-const logLocation = path.resolve('.', 'logging', 'logs.log');
-fs.writeFile(logLocation, '', { flag: 'a+' }, (err) => {
+const logLocation = path.resolve(__dirname, 'logs.log');
+
+fs.writeFile(logLocation, '', (err) => {
   if (err) console.log(err);
 });
 

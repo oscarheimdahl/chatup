@@ -43,15 +43,13 @@ const LoginView = ({ loginTransition }: LoginViewProps) => {
   );
 };
 
-const LoginForm = ({
-  registeredUser,
-  showRegister,
-  className,
-}: {
+interface LoginFormProps {
   registeredUser: User | undefined;
   showRegister: () => void;
   className: string;
-}) => {
+}
+
+const LoginForm = ({ registeredUser, showRegister, className }: LoginFormProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [missingFields, setMissingFields] = useState(false);
@@ -162,6 +160,7 @@ const RegisterForm = ({ showLogin, className }: { showLogin: (user?: User) => vo
     const showLoginTimeout = setTimeout(() => {
       showLogin({ username, password });
       resetRegister();
+      setMovingToLogin(false);
     }, 2000);
     return () => clearTimeout(showLoginTimeout);
   }, [success]);
@@ -182,22 +181,21 @@ const RegisterForm = ({ showLogin, className }: { showLogin: (user?: User) => vo
   const passwordMismatch = password !== password2;
   // prettier-ignore
   const checkError = () => {
-    let err = '';
-    if (passwordTooShort)                       err = `Password must be atleast ${passwordMinLength} characters.`;
-    if (usernameTooShort)                       err = `Username must be atleast ${usernameMinLength} characters.`;
-    if (usernameTooShort && passwordTooShort)   err = `Username and password too short.`;
-    if (passwordMismatch)                       err = 'Passwords dont match.';
-    if (!username)                              err = 'Please enter a username.';
-    if (!password && !password2)                err = 'Please enter a password.';
-    if ((!password || !password2) && !username) err = 'Please enter a username and password.';
-    if (err) setErrorText(err);
+    if (passwordTooShort)                       return `Password must be atleast ${passwordMinLength} characters.`;
+    if (usernameTooShort)                       return `Username must be atleast ${usernameMinLength} characters.`;
+    if (usernameTooShort && passwordTooShort)   return `Username and password too short.`;
+    if (passwordMismatch)                       return 'Passwords dont match.';
+    if (!username)                              return 'Please enter a username.';
+    if (!password && !password2)                return 'Please enter a password.';
+    if ((!password || !password2) && !username) return 'Please enter a username and password.';
+    
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (movingToLogin) return;
-    checkError();
-    if (errorText) return;
+    const error = checkError();
+    if (error) return setErrorText(error);
     dispatch(register({ username, password }));
   };
 

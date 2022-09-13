@@ -45,7 +45,13 @@
       height: 100%;
       overflow: scroll;
       padding: 0.5rem 1rem;
-      transition: opacity 1000ms;
+
+      .message-sub-container {
+        transition: opacity 1000ms;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
 
       .message-row {
         width: 100%;
@@ -65,14 +71,23 @@
           .message {
             padding: 0.5rem 1rem;
             border-radius: var(--border-radius);
-            // border: 1px solid black;
             position: relative;
-            // box-shadow: rgba(0, 0, 0, 0.312) -4px 3px 1px 0px;
             box-shadow: rgba(0, 0, 0, 0.312) 0px 2px 3px 0px, rgba(0, 0, 0, 0.312) 0px 1px 5px 0px;
           }
 
           .sender {
+            transform: translateX(2px);
             color: var(--gray);
+          }
+
+          &.admin {
+            .sender {
+              color: #222;
+              font-style: italic;
+            }
+            .message {
+              background-color: #222;
+            }
           }
         }
 

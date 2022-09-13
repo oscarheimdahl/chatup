@@ -21,4 +21,14 @@ const useSocket = () => {
   return socket;
 };
 
+export const useSocketOn = (event: Parameters<typeof socket.on>[0], action: Parameters<typeof socket.on>[1]) => {
+  const socket = useSocket();
+  useEffect(() => {
+    socket.on(event, action);
+    return () => {
+      socket.off(event, action);
+    };
+  }, []);
+};
+
 export default useSocket;

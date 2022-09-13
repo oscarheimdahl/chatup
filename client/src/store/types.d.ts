@@ -15,6 +15,8 @@ export interface UserInitialState {
     usernameTaken: boolean;
     success: boolean;
   };
+  message: string;
+  shouldSendMessage: boolean;
 }
 
 export interface SocketInitialState {

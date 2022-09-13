@@ -1,4 +1,4 @@
-import useSocket from '@src/hooks/useSocket';
+import useSocket, { useSocketOn } from '@src/hooks/useSocket';
 import { useAppDispatch, useAppSelector } from '@src/store/hooks';
 import { useEffect, useState } from 'react';
 
@@ -10,10 +10,19 @@ import { useAdmin } from '@src/hooks/useCanDownload';
 import { setRoom } from '@src/store/slices/userSlice';
 import './main-view.scss';
 import ColorChooser from '@src/components/ColorChooser/ColorChooser';
+import { RoomJoinResponse } from '../../../../types';
 
 const MainView = () => {
   const [visible, setVisible] = useState(false);
   const [useTransition, setUseTransition] = useState(false);
+  const navigate = useNavigate();
+  const [roomName, setRoomName] = useState('');
+  const socket = useSocket();
+  const token = useAppSelector((s) => s.user.token);
+  const dispatch = useAppDispatch();
+
+  useAdmin();
+
   useEffect(() => {
     if (localStorage.getItem('show-login-transition') === 'true') {
       setTimeout(() => {
@@ -26,14 +35,11 @@ const MainView = () => {
     }
   }, []);
 
-  useAdmin();
-  const navigate = useNavigate();
-
-  const [roomName, setRoomName] = useState('');
-
-  const socket = useSocket();
-  const token = useAppSelector((s) => s.user.token);
-  const dispatch = useAppDispatch();
+  useSocketOn('JOINED_ROOM', ({ room, preExisting }: RoomJoinResponse) => {
+    setRoomName(room);
+    dispatch(setRoom(room));
+    navigate({ pathname: 'room' });
+  });
 
   const handleRoomInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoomName(e.target.value);
@@ -42,12 +48,6 @@ const MainView = () => {
   const joinRoom = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     socket.emit('JOIN_ROOM_REQUEST', roomName, token);
-
-    socket.once('JOINED_ROOM', ({ room, preExisting }) => {
-      setRoomName(room);
-      dispatch(setRoom(room));
-      navigate({ pathname: 'room' });
-    });
   };
 
   return (

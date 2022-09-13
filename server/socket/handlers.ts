@@ -37,7 +37,8 @@ export const handleDisconnect = (username: string, socket: ChatSocket) => {
 };
 
 export const handleChatMessage = (chatMessage: ChatMessage, socket: ChatSocket, log: boolean = true) => {
-  socket.to(chatMessage.room).emit('CHAT_MESSAGE', chatMessage);
+  console.log('emitting');
+  socket.broadcast.to(chatMessage.room).emit('CHAT_MESSAGE', chatMessage);
   chatMessageDB.create(chatMessage);
   if (log) logChatMessage(chatMessage);
 };

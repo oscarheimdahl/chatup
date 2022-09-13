@@ -57,6 +57,8 @@ const initialState: UserInitialState = {
     usernameTaken: false,
     success: false,
   },
+  message: '',
+  shouldSendMessage: false,
 };
 
 export const userSlice = createSlice({
@@ -83,6 +85,12 @@ export const userSlice = createSlice({
     },
     setColor: (state, action) => {
       state.color = action.payload;
+    },
+    setMessage: (state, action) => {
+      state.message = action.payload;
+    },
+    setShouldSendMessage: (state, action) => {
+      state.shouldSendMessage = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -126,7 +134,8 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { resetLoginError, resetRegisterError, logout, setRoom, setColor } = userSlice.actions;
+export const { resetLoginError, resetRegisterError, logout, setRoom, setColor, setMessage, setShouldSendMessage } =
+  userSlice.actions;
 
 const userReducer = userSlice.reducer;
 

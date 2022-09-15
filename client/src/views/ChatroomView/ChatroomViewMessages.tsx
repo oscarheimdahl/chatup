@@ -11,39 +11,65 @@ interface MessagesProps {
 }
 
 const Messages = ({ chatMessages, messageKey = '', setLastUsername = '', usernameColors }: MessagesProps) => {
-  const username = useAppSelector((s) => s.user.username);
-
+  const ownUsername = useAppSelector((s) => s.user.username);
   let lastUsername = setLastUsername;
 
   return (
     <>
-      {chatMessages.map((message, i) => {
-        const ownMessage = message.username === username;
+      {chatMessages.map((chatMessage, i) => {
+        const { text, username } = chatMessage;
+        const ownMessage = username === ownUsername;
         const ownMessageClass = ownMessage ? 'own-message' : '';
-        const showUsername = !ownMessage && lastUsername !== message.username;
-        const messageColor = usernameColors?.get(message.username);
 
-        const MessageBubble = ({ admin }: { admin?: boolean }) => (
-          <span className={`message-bubble ${ownMessageClass} ${admin ? 'admin' : ''}`}>
-            {showUsername && <span className='sender'>{message.username}</span>}
-            <span className={`message color-${messageColor}`}>{message.message}</span>
-          </span>
-        );
+        const SystemMessage = () => <span className='system-message'>{text}</span>;
 
-        const SystemMessage = () => <span className='system-message'>{message.message}</span>;
-
-        const buildMessage = (username: string) => {
+        const buildMessage = () => {
           if (username === 'system') return <SystemMessage />;
-          if (username === 'admin') return <MessageBubble admin />;
-          return <MessageBubble />;
+
+          return (
+            <Message
+              message={chatMessage}
+              // username={username}
+              // text={text}
+              color={usernameColors?.get(username) ?? 0}
+              ownMessage={ownMessage}
+              // admin={username === 'admin'}
+              lastUsername={lastUsername}
+            />
+          );
         };
 
-        const Message = () => <div className={'message-row ' + ownMessageClass}>{buildMessage(message.username)}</div>;
+        const message = buildMessage();
+        lastUsername = username;
 
-        lastUsername = message.username;
-        return <Message key={messageKey + i} />;
+        return (
+          <div key={messageKey + i} className={'message-row ' + ownMessageClass}>
+            {message}
+          </div>
+        );
       })}
     </>
+  );
+};
+
+interface MessageProps {
+  message: ChatMessage;
+  color: number;
+  ownMessage: boolean;
+  lastUsername: string;
+}
+
+const Message = ({ message, color, ownMessage, lastUsername }: MessageProps) => {
+  const { text, username } = message;
+  const adminClass = message.username === 'admin' ? 'admin' : '';
+  const showUsername = !ownMessage && lastUsername !== username;
+
+  return (
+    <span className={`message ${adminClass}`}>
+      {showUsername && <span className='sender'>{username}</span>}
+      <span className={`text-bubble color-${color}`}>{text}</span>
+      {/* <span className='message-tooltip'>12:23</span> */}
+    </span>
   );
 };
 

@@ -1,6 +1,6 @@
 export interface ChatMessage {
   room: string;
-  message: string;
+  text: string;
   username: string;
   sentDate: Date;
   color: number;

@@ -2,13 +2,14 @@ import { ThemeProvider } from '@emotion/react';
 import LoginView from '@views/LoginView/LoginView';
 import MainView from '@views/MainView/MainView';
 import { useEffect, useState } from 'react';
-import { Route, Router, Routes } from 'react-router';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
+import { HashRouter } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import ControlPanel from './components/ControlPanel/ControlPanel';
 import DotsBackground from './components/DotsBackground/DotsBackground';
 import { theme } from './config/theme';
 import { host } from './config/vars';
+import useConnectOnLogin from './hooks/useConnectSocket';
 import { useJwtInterceptor } from './hooks/useJwtInterceptor';
 import useLoggedIn from './hooks/useLoggedIn';
 import './index.scss';
@@ -20,18 +21,14 @@ export const socket = io(host as string);
 const View = () => {
   const [showMainView, setShowMainView] = useState(false);
   const [loginTransition, setLoginTransition] = useState(false);
+  const loggedIn = useAppSelector((state) => state.user.loggedIn);
+
   useLoggedIn();
   useJwtInterceptor();
-
-  const token = useAppSelector((s) => s.user.token);
-  const loggedIn = useAppSelector((state) => state.user.loggedIn);
+  useConnectOnLogin();
 
   useEffect(() => {
     if (loggedIn) {
-      if (socket.disconnected) {
-        socket.auth = { token };
-        socket.connect();
-      }
       if (localStorage.getItem('show-login-transition')) {
         setLoginTransition(true);
         setTimeout(() => setShowMainView(true), 1000);
@@ -50,7 +47,9 @@ const View = () => {
   return (
     <Routes>
       <Route path='/' element={<MainView />} />
-      <Route path='/room' element={<ChatroomView />} />
+      <Route path='/room' element={<ChatroomView />}>
+        <Route path='*' element={<ChatroomView />} />
+      </Route>
     </Routes>
   );
 };

@@ -19,7 +19,7 @@ const create = async (chatMessage: ChatMessage) => {
     data: {
       userId: user.id,
       chatroomId: chatroom.id,
-      message: chatMessage.message,
+      message: chatMessage.text,
       sentDate: chatMessage.sentDate,
     },
   });
@@ -49,7 +49,7 @@ const get = async (chatroomId: number): Promise<ChatMessage[]> => {
     return {
       color: message.user.color,
       username: message.user.username,
-      message: message.message,
+      text: message.message,
       room: message.chatroom.name,
       sentDate: message.sentDate,
     };

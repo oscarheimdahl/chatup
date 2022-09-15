@@ -16,6 +16,7 @@ const Input = ({ placeholder, reference, value, onChange, name, label, indicated
     <section className='input-section'>
       {label && <label htmlFor={name}>{label}</label>}
       <input
+        autoCapitalize='none'
         placeholder={placeholder}
         ref={reference}
         className={indicated ? 'indicated' : ''}

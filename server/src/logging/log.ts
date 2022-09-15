@@ -27,7 +27,7 @@ export const log = (text: any) => {
 
 export const logChatMessage = (chatMessage: ChatMessage) => {
   const logMessageLength = 10;
-  const message = chatMessage.message;
+  const message = chatMessage.text;
   // const cutMessage = message.slice(0, logMessageLength) + (message.length > logMessageLength ? '...' : '');
   log(`"${message}" - ${chatMessage.username} in ${chatMessage.room}`);
 };

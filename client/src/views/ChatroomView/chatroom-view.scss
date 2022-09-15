@@ -29,6 +29,7 @@
         place-content: center;
         transform: translateY(-50%);
         background-color: transparent;
+        color: black;
         border: none;
         padding: 0.5rem;
 
@@ -43,7 +44,7 @@
       flex-direction: column;
       gap: 0.5rem;
       height: 100%;
-      overflow: scroll;
+      overflow-y: scroll;
       padding: 0.5rem 1rem;
 
       .message-sub-container {
@@ -58,17 +59,18 @@
         display: flex;
         color: white;
 
-        &.own-message {
-          justify-content: end;
-        }
-
-        .message-bubble {
+        .message {
           display: flex;
           align-items: flex-start;
           flex-direction: column;
           position: relative;
+          overflow-x: visible;
 
-          .message {
+          .text-bubble {
+            // display: flex;
+            // flex-grow: 0;
+            margin-right: 2rem;
+            width: fit-content;
             padding: 0.5rem 1rem;
             border-radius: var(--border-radius);
             position: relative;
@@ -78,6 +80,12 @@
           .sender {
             transform: translateX(2px);
             color: var(--gray);
+          }
+          .message-tooltip {
+            color: var(--gray);
+            position: absolute;
+            bottom: -1.5rem;
+            width: 10rem;
           }
 
           &.admin {
@@ -91,11 +99,25 @@
           }
         }
 
+        &.own-message {
+          justify-content: end;
+
+          .text-bubble {
+            margin-left: 2rem;
+            margin-right: 0rem;
+          }
+
+          .message-tooltip {
+            text-align: right;
+            right: 0;
+          }
+        }
+
         .system-message {
           display: flex;
           width: 100%;
           justify-content: center;
-          color: var(--gray);
+          color: var(--gray-light);
         }
       }
     }

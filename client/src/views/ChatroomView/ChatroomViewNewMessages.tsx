@@ -38,7 +38,7 @@ const NewMessages = ({ usernameColors, scrollToBottom }: NewMessagesProps) => {
 
   const sendMessage = () => {
     if (!message) return;
-    const chatMessage: ChatMessage = { message, room, username, sentDate: new Date(), color };
+    const chatMessage: ChatMessage = { text: message, room, username, sentDate: new Date(), color };
     socket.emit('CHAT_MESSAGE', chatMessage, token);
     updateNewMessages(chatMessage);
     dispatch(setMessage(''));

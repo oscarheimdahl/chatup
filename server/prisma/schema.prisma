@@ -39,6 +39,6 @@ model ChatMessage {
   user       User     @relation(fields: [userId], references: [id])
   chatroomId Int
   chatroom   Chatroom @relation(fields: [chatroomId], references: [id])
-  message    String
+  message    String   //text
   sentDate   DateTime
 }

@@ -49,7 +49,7 @@ export const handleJoinRoomRequest = async (username: string, room: string, sock
   socket.broadcast.to(room).emit('OTHER_JOINED_ROOM', { username, color });
   handleChatMessage(
     {
-      message: `${username} joined the room`,
+      text: `${username} joined the room`,
       username: 'system',
       color: 1,
       room: room,
@@ -85,7 +85,7 @@ const leaveRoom = (username: string, socket: ChatSocket) => {
 
   handleChatMessage(
     {
-      message: `${username} left the room`,
+      text: `${username} left the room`,
       username: 'system',
       color: 1,
       room: room,

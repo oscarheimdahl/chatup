@@ -5,10 +5,12 @@
   position: absolute;
   width: $width;
   height: $height;
-  background-color: var(--accent-3);
+  background-color: var(--red);
   left: calc($dist - $width / 2);
   top: calc($dist - $height / 2);
   border: solid 1px black;
+  color: var(--white);
+  font-weight: bold;
   transform-origin: center center;
   transform: rotate(-45deg);
   display: grid;

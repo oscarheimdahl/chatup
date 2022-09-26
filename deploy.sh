@@ -6,6 +6,12 @@
  NOCOLOR='\033[0m' # No Color
  ERROR='\033[0;31m'
 
+deploy_chatup () {
+   /usr/bin/killall screen
+   /usr/bin/screen -d -m -S chatup /usr/bin/bash -c "cd /home/oheim/Desktop/chatup && /usr/bin/git pull && /usr/local/bin/yarn migrate-prod && /usr/local/bin/yarn deploy"
+   /usr/bin/echo "--- DEPLOYED AT $(/usr/bin/date) ---" >> /home/oheim/Desktop/chatup/server/src/logging/logs.log
+}
+
  echo
  echo -e ${ACTION}Checking Git repo
  echo -e =======================${NOCOLOR}
@@ -25,10 +31,11 @@ git fetch
  then
    echo -e ${ERROR}Not up to date with origin.${NOCOLOR}
    echo
-   /usr/bin/killall screen
-   /usr/bin/screen -d -m /usr/bin/bash -c "cd /home/oheim/Desktop/chatup && /usr/bin/git pull && /usr/local/bin/yarn migrate-prod && /usr/local/bin/yarn deploy"
-   /usr/bin/echo "--- DEPLOYED AT $(/usr/bin/date) ---" >> /home/oheim/Desktop/chatup/server/src/logging/logs.log
+   deploy_chatup
    exit 0
  else
+   if ! screen -list | grep -q "chatup"; then
+     deploy_chatup
+   fi
    echo -e ${FINISHED}Current branch is up to date with origin/master.${NOCOLOR}
  fi

@@ -35,6 +35,8 @@ git fetch
    exit 0
  else
    if ! screen -list | grep -q "chatup"; then
+     echo -e ${ERROR}Chatup down, reploying...${NOCOLOR}
+     echo
      deploy_chatup
    fi
    echo -e ${FINISHED}Current branch is up to date with origin/master.${NOCOLOR}
